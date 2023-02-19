@@ -1,4 +1,5 @@
 # For parsing command line arguments for a morphologizer
+# -*- coding: utf-81 -*-
 
 # General:
 
@@ -20,6 +21,7 @@ class morphargs():
     parser.add('-t', '--tense')     # present, imperfect, future simple, past perfect, etc.
     parser.add('-m', '--mode')      # indicative, subjunctive, imperative, infinitive, etc.
     parser.add('--adv', '--adverb')
+    parser.add('--pass', '--passive')  # For passive voice
 
     parser.add('-s', '-subject')
     parser.add('-noun', '--noun')

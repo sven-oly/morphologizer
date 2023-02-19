@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ce147b35-8d00-43e7-b946-15021afcfa1e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Morphologizer.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/comline.py" beforeDir="false" afterPath="$PROJECT_DIR$/comline.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/morph_fr.py" beforeDir="false" afterPath="$PROJECT_DIR$/morph_fr.py" afterDir="false" />

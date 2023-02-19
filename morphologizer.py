@@ -1,6 +1,9 @@
 # Start of a package that implements morphology in general
 # -*- coding: utf-81 -*-
 
+import comline
+
+
 class Morphologizer:
     def __init__(self):
         # TODO: Define some constants for tense, aspect, person, mood, etc.
@@ -8,7 +11,7 @@ class Morphologizer:
         return
 
 
-class LangInfo:
+class LangModel:
     def __init__(self, lang_code, script_code='latn'):
         self.lang_code = lang_code
         self.script_code = script_code
@@ -18,15 +21,11 @@ class LangInfo:
         self.number = []
         self.classes = []
         self.auxiliary = []
+        self.noun_classes = []
 
     def verbInfo(self):
         # Things that verbs do
-        self.moods = []
-        self.time_aspect = []
-        self.person = []
-        self.number = []
-        self.classes = []
-        self.auxiliary = []
+        return
 
         # Sets of regular and irregular?
         # which need agreement with nouns?
@@ -36,4 +35,10 @@ class LangInfo:
         return
 
     def pronounInfo(self):
+        return
+
+
+class Verb:
+    def __init__(self, lang_info):
+        self.lang_info = lang_info
         return

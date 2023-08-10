@@ -1,5 +1,5 @@
 # For parsing command line arguments for a morphologizer
-# -*- coding: utf-81 -*-
+# -*- coding: utf-8 -*-
 
 # General:
 

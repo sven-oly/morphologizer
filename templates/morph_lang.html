@@ -1,0 +1,27 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <h1>Morphy - main</h1>
+    <p>A morphological parser and generator for {{lang_name}}.
+    <!-- Input box -->
+    <h2>Generator</h2>
+    <form action='/generate/?lang_code={{lang_code}}'>
+    <label for="gen_text">Generate for:</label>
+    <input type="text" id="text" name="gen_text">
+    <input type="submit" value="Submit">
+    </form>
+    <h2>Parser</h2>
+    <form action='/parse/?lang_code={{lang_code}}'>
+    <label for="parse_text">Generate for:</label>
+    <input type="text" id="text" name="parse_text">
+    <input type="submit" value="Submit">
+    </form>
+
+    <h2>Info</h2>
+    <p>Grammar rules: {{rules}}
+      
+
+
+  </body>
+  </html>

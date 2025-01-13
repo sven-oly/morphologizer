@@ -1,34 +1,11 @@
-runtime: python27
-api_version: 1
-threadsafe: yes
+runtime: python39
+
+instance_class: F2
+
 
 handlers:
-- url: /favicon\.ico
-  static_files: favicon.ico
-  upload: favicon\.ico
+- url: /static
+  static_dir: static
 
-- url: /testdata/.*
-  static_dir: testdata
-  application_readable: true
-
-- url: /fonts
-  static_dir: fonts
-
-- url: /collation
-  static_dir: collation
-
-- url: /css
-  static_dir: css
-  
-- url: /js
-  static_dir: js
-
-- url: /layouts
-  static_dir: layouts
-  
-- url: /images
-  static_dir: images
-
-- url: .*
-  script: morphologizer.app
-
+- url: /.*
+  script: auto

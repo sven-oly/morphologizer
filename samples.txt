@@ -1,0 +1,14 @@
+
+
+k^aaʔi [1S-inc-Sub/3S-inanimate-Obj]+aaʔi+[V]+[PresCont]
+K^ookiska [1S-inc-Sub/3S-inanimate-Obj]+ookiska+[V]+[PresCont]
+ak^uuhiiloo^eʔi [3S-Obj]+uuhiiloo+[V]+[Completive]+[NonExpPast]
+aji^steeliha [3S-Obj]+steeliha+[V]+[PresCont]
+
+
+kaa^Ꮵ^ᏍᏕᎵᎭ        [NGT]+[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont]
+kaa^k^ᎣᎩᏍᎦ         [NGT]+[1S-inc-Sub/3S-inanimate-Obj]+ᎣᎩᏍᎦ+[V]+[PresCont]
+kvv^kw^ᎣᎩᏍᎦ      [NGT]+[3S-Sub/1S-inc-Obj]+ᎣᎩᏍᎦ+[V]+[PresCont]
+Ꭼ^wa^ᏍᏕᎸh^ᎥᎢ     [NGT]+[3S-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[Completive]+[ExpPast]
+
+

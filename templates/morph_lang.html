@@ -1,22 +1,135 @@
+<!doctype html>
 <html>
   <head>
+
+    <script type="text/javascript">
+
+      // Global language code
+      const lang_code = '{{lang_code}}';
+      
+      function get_morph_data(caller_function, text_source_id, output_id, lang_code) {
+          // Gets informatino from the back end and puts results into the output area specified.
+          //console.log("get_morph_data" + caller_function + ' ' + text_source + ' ' + output_id);
+          const input_source = document.getElementById(text_source_id);
+          const input_text = input_source.value;
+          const output_element = document.getElementById(output_id);
+
+          let req = new XMLHttpRequest();
+          req.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  alert(this.responseText);
+                  const raw_data = this.responseText;
+                  //const data = JSON.parse(raw_data);
+                  //alert('data = ' + data);
+                  output_element.value = raw_data;
+                  const x = 2;
+              } else {
+                  // output_element.value = 'Status = ' + this.status;
+                  const x = 1;
+              }
+          };
+
+          let target_list = [];
+          target_list.push('function=' + caller_function);
+          target_list.push('lang_code=' + lang_code);
+          target_list.push('input_text=' + input_text.trim());
+          const target = target_list.join('&');
+          
+/*          req.open('POST', target);
+          req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+          req.send(");
+*/
+          req.open('POST', '/get_morph_results/', true);
+          req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+          req.send(target);
+      }
+
+      function get_generate_data() {
+          // Gets informatino from the back end and puts results into the output area specified.
+          const input_source = document.getElementById('gen_text');
+          const input_text = input_source.value;
+          const output_element = document.getElementById('generate_response');
+
+          let req = new XMLHttpRequest();
+          req.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  const raw_data = this.responseText;
+                  const result_data = JSON.parse(raw_data);
+                  output_element.value = result_data['result_text'];
+              }
+          };
+
+          let target_list = [];
+          target_list.push('function=' + 'generate');
+          target_list.push('lang_code=' + lang_code);
+          const input_text_ready = encodeURIComponent(input_text.trim());
+          target_list.push('input_text=' + input_text_ready);
+          const target = target_list.join('&');
+          
+          req.open('POST', '/get_morph_results/', true);
+          req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+          req.send(target);
+      }
+      
+      function get_parse_data() {
+          // Gets informatino from the back end and puts results into the output area specified.
+          const input_source = document.getElementById('parse_text');
+          const input_text = input_source.value;
+          const output_element = document.getElementById('parse_response');
+
+          let req = new XMLHttpRequest();
+          req.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  const raw_data = this.responseText;
+                  const result_data = JSON.parse(raw_data);
+                  output_element.value = result_data['result_text'];
+              }
+          };
+
+          let target_list = [];
+          target_list.push('function=' + 'parse');
+          target_list.push('lang_code=' + lang_code);
+          const input_text_ready = encodeURIComponent(input_text.trim());
+          target_list.push('input_text=' + input_text_ready);
+          const target = target_list.join('&');
+          
+          req.open('POST', '/get_morph_results/', true);
+          req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+          req.send(target);
+      }
+    </script>
+    
   </head>
   <body>
     <h1>Morphy - main</h1>
-    <p>A morphological parser and generator for {{lang_name}}.
+    <p>A morphological generator and parser for {{lang_name}} ({{lang_code}}).
     <!-- Input box -->
     <h2>Generator</h2>
-    <form action='/generate/?lang_code={{lang_code}}'>
-    <label for="gen_text">Generate for:</label>
-    <input type="text" id="text" name="gen_text">
-    <input type="submit" value="Submit">
+    <form action="/get_morph_results" method="post">
+    <label for="gen_text">Generate:</label>
+    <input type="text" id="gen_text" name="gen_text" size="80">
+
+    <input type="button" id='btb-generated' onclick="get_generate_data();">Get generate</button>
     </form>
+    {% if use_textarea %} 
+    <label for="generate_response">Generate response</label>
+    <br />
+    <textarea id="generate_response" cols="0"/>
+    </textarea>
+    {% endif %}
+
     <h2>Parser</h2>
-    <form action='/parse/?lang_code={{lang_code}}'>
-    <label for="parse_text">Generate for:</label>
-    <input type="text" id="text" name="parse_text">
-    <input type="submit" value="Submit">
+    <form action="/get_morph_results" method="post">
+    <label for="parse_text">Parse:</label>
+    <input type="text" id="parse_text" name="parse_text" size="80">
+    <input type="button" id='btb-parse' onclick="get_parse_data();">Get parse</button>
     </form>
+    {% if use_textarea %}
+    <label for="parse_response">Parse response</label>
+    <br />
+    <textarea id="parse_response" cols="80"/>
+    </textarea>
+    {% endif %}
 
     <h2>Info</h2>
     <p>Grammar rules: {{rules}}

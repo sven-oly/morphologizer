@@ -1,18 +1,25 @@
 #
 # -*- coding: utf-8 -*-
 
-from morphologizer import LangModel, Morphologizer, Verb
+from morphologizer import Morphologizer
+from langmodel import LangModel, Verb
 
 
 class MorphFr(Morphologizer):
-    def __init__(self, model):
-        super().__init__(model)
-        self.LangModel = model
+    def __init__(self, model=None):
+        #super().__init__(model)
+        self.LangModel = FrenchLang()
+        self.verbModel = None
 
+        # Example to get started
+        self.verbs = []
+
+    def setVerb(self, infinitive):
+        self.verbModel = FrenchVerb(self.LangModel, infinitive)
 
 class FrenchLang(LangModel):
     def __init__(self):
-        super().__init__('fr')
+        #super().__init__('fr')
         self.lang_code = 'fr'
         self.script_code = 'latn'
         self.gender = ['m', 'f']
@@ -26,12 +33,16 @@ class FrenchLang(LangModel):
           'singulier': ['me', 'te', 'se'],
           'pluriel': ['nous', 'vous', 'se']
         }
-
-        self.use_etre = ['aller', 'venir']  # Many more...
-
+        self.verbInfo()
         self.etre = None
         self.avoir = None
 
+        self.auxEtre()
+        self.nounInfo()
+
+    def setAuxiliary(self, aux_verb):
+        self.aux_verb = aux_verb
+        
     def setEtre(self, etre):
         self.etre = etre
 
@@ -39,7 +50,7 @@ class FrenchLang(LangModel):
         self.avoir = avoir
 
     def verbInfo(self):
-        self.classes = ['er', 'ir', 'irregular']
+        self.verb_classes = ['er', 'ir', 'irregular']
         self.moods = ['indicative', 'subjunctive', 'imperative', 'infinitive', 'participe']
         self.auxiliary = ['etre', 'avoir']
 
@@ -50,17 +61,19 @@ class FrenchLang(LangModel):
     def nounInfo(self):
         # Gender affects adjectives and pronouns, and agreement
         # with some verb forms, e.g., participe.
+        self.genders = ['m', 'f']
         return
 
 
 class FrenchVerb(Verb):  # Instance?
-    def __init__(self, model, infinitive, conjugation=None, exceptions=None, use_etre=False):
-        super().__init__(model)
+    def __init__(self, model, infinitive,
+                 conjugation=None, exceptions=None, use_etre=False):
+        #super().__init__(model)
 
         # -er, -ir, -re
         # TODO: Normalize the input with diacritics
         self.model = model
-
+        self.aux_verb = 'avoir'  # Default
         self.infinitive = infinitive
         self.stem = infinitive[:-2]
         if infinitive == 'avoir':
@@ -92,7 +105,7 @@ class FrenchVerb(Verb):  # Instance?
         else:
             self.irregular = False
 
-        #  self.use_etre = use_etre  # The auxiliary
+        self.use_etre = use_etre  # The auxiliary
         if infinitive in self.model.use_etre:
           self.auxiliary = self.model.etre
         else:
@@ -109,6 +122,13 @@ class FrenchVerb(Verb):  # Instance?
         self.passive_agreement = True  # At least for etre
 
         self.numbers = ['singulier', 'pluriel']
+        self.modes = ['indicatif',
+                      'subjonctif',
+                      'impératif',
+                      'infinitif',
+
+                      'participe']
+
         self.mode_tenses = {
           'indicatif': ['présent', 'passé composé',
                         'imparfait', 'plus-que-parfait',
@@ -136,8 +156,6 @@ class FrenchVerb(Verb):  # Instance?
             'futur antérieur': 'futur simple',
             'conditionnel passé': 'conditionnel présent',
             'passé': 'présent'}
-
-        self.modes = ['indicatif', 'subjonctif', 'impératif', 'infinitif', 'participe']
 
         if infinitive in self.model.use_etre:
             self.auxiliary = self.model.etre
@@ -199,21 +217,21 @@ class FrenchVerb(Verb):  # Instance?
             return self.conjugation['participe'][tense]
           else:
             # Return regular ending
-            return self.stem + 'é'
+            return u'%s%s' % (self.stem, u'é')
         if tense in self.simple_tenses:
             if mode == 'indicatif':
-                if tense == 'présent':
+                if tense == u'présent':
                     endings = ['e', 'es', 'e', 'ons', 'ez', 'ent']
                 elif tense == 'imparfait':
                     endings = ['ais', 'ais', 'ait', 'ions', 'iez', 'aient']
-                elif tense == 'passé simple':
-                    endings = ['ai', 'as', 'a', 'âmes', 'âtes', 'èrent']
+                elif tense == u'passé simple':
+                    endings = ['ai', 'as', 'a', u'âmes', u'âtes', u'èrent']
                 elif tense == 'futur simple':
                     endings = ['erai', 'eras', 'era', 'erons', 'erez', 'eront']
-                elif tense == 'conditionnel présent':
+                elif tense == u'conditionnel présent':
                     endings = ['erais', 'erais', 'erait', 'erions', 'eriez', 'eraient']
             elif mode == 'subjonctif':
-                if tense == 'présent':
+                if tense == u'présent':
                     endings = ['esse', 'esses', 'esse', 'issions', 'issiez', 'issent']
                 elif tense == 'imparfait':
                     endings = ['esse', 'esses', 't', 'issions', 'issiez', 'issent']
@@ -223,9 +241,9 @@ class FrenchVerb(Verb):  # Instance?
         else:
             simple_tense = self.simple_to_compound_tenses[tense]
             helper = self.auxiliary.conjugate(person, number, simple_tense, mode)
-            return '%s %s' % (
+            return u'%s %s' % (
                 helper,
-                self.conjugate(person, number, 'passé', 'participe'))
+                self.conjugate(person, number, u'passé', u'participe'))
 
     def get_auxiliary(self, person, number, tense, mode):
         if self.auxiliary == 'avoir':
@@ -242,13 +260,13 @@ class FrenchVerb(Verb):  # Instance?
             # Return regular ending
             return self.stem + 'i'
         if tense in self.simple_tenses:
-          if mode == 'indicatif':
+          if mode == u'indicatif':
             # Return regular ending
             if tense == 'présent':
                 endings = ['is', 'is', 'it', 'issons', 'issez', 'issent']
             elif tense == 'imparfait':
                 endings = ['issais', 'issais', 'issait', 'issions', 'issiez', 'issaient']
-            elif tense == 'passé simple':
+            elif tense == u'passé simple':
                 endings = ['is', 'is', 'it', 'îmes', 'ites', 'irent']
             elif tense == 'futur simple':
                 endings = ['irais', 'iras', 'ira', 'irons', 'irez', 'iront']
@@ -261,8 +279,29 @@ class FrenchVerb(Verb):  # Instance?
           helper = self.auxiliary.conjugate(person, number, simple_tense, mode)
           return '%s %s' % (
             helper,
-            self.conjugate(person, number, 'passé', 'participe'))
+            self.conjugate(person, number, u'passé', 'participe'))
 
+    def get_conjugation_table(self):
+        lines = []
+        # For each number and person
+        modes = ['indicatif', 'subjonctif']  # Do the others later
+        for mode in modes:
+            line = u'  Mode:: %s' % mode
+            lines.append(line)
+            for tense in self.mode_tenses[mode]:
+                line = 'u  Tense: %s' % tense
+                lines.append(line)
+                for person in self.persons:
+                    # Accumulate the line
+                    line = []
+                    for number in self.numbers:
+                        result = self.conjugate(person, number, tense, mode)
+                        line.append(result)
+                        # This may not work for all lines
+                    lines.append('    %20s      %20s' % (line[0], line[1]))
+
+        return '\n'.join(lines)
+    
     def print_conjugation_table(self):
         # For each mode
         #   For each tense
@@ -290,7 +329,7 @@ def setupBasicFrench(theModel):
     # For each composed form, add 'eu'
     'présent':
       ['suis', 'es', 'est', 'somme', 'etes', 'sont'],
-    'passé composé':
+    u'passé composé':
       ['ai été', 'as été', 'a été',
        ' avons été', 'avez été', 'ont été'],
     'imparfait':
@@ -298,21 +337,21 @@ def setupBasicFrench(theModel):
     'plus-que-parfait':
       ['avais été', 'avais été', 'avait été',
        'avions été', 'aviez été', 'avaient été'],  # Add 'eu' to imparfait
-    'passé simple':
+    u'passé simple':
       ['fus', 'fus', 'fut', 'fûmes', 'fûtes', 'furent'],
-    'passé antérieur':
+    u'passé antérieur':
       ['eus été', 'eus été', 'eut été',
        'eûmes été', 'eûtes été', 'eurent été'],
     'futur simple':
       ['serai', 'seras', 'sera', 'serons', 'serez', 'seront'],
     'futur antérieur':
-      ['aurai été', 'auras été', 'aura été',
-       'aurons été', 'aurez été', 'auront été'],
+      [u'aurai été', u'auras été', u'aura été',
+       u'aurons été', u'aurez été', u'auront été'],
     'conditionnel présent':
       ['serais', 'serais', 'serait', 'serions', 'seriez', 'seraient'],
-    'conditionnel passé':
-      ['aurais été', 'aurais été', 'aurait été',
-       'aurions été', 'auriez été', 'auraient été'],
+    u'conditionnel passé':
+      [u'aurais été', u'aurais été', u'aurait été',
+       u'aurions été', u'auriez été', u'auraient été'],
     # Plus the composed forms
   },
   'subjonctif': {
@@ -409,7 +448,7 @@ def setupBasicFrench(theModel):
 
 class SpecialCase(FrenchVerb):
     def __init__(self, theModel, infinitive, conjugation=None):
-        super().__init__(infinitive)
+        #super().__init__(infinitive)
         self.infinitive = infinitive
         self.irregular = True
         self.auxiliary = 'avoir'  # for most
@@ -419,6 +458,7 @@ class SpecialCase(FrenchVerb):
 def main():
     words = ['être', 'avoir', 'finir', 'aimer', 'venir', 'prendre',
              'haïr', 'voir', 'devoir', ]
+    words = ['prendre']
     frenchLangModel = FrenchLang()
     morph = MorphFr(frenchLangModel)
     setupBasicFrench(frenchLangModel)
@@ -426,8 +466,8 @@ def main():
         v = FrenchVerb(frenchLangModel, word)
         print('%s' % '-'*20)
         print('Infinitive: %s, stem: %s' % (v.infinitive, v.stem))
-        v.print_conjugation_table()
-
+        result = v.get_conjugation_table()
+        print(result)
 
 if __name__ == "__main__":
     main()

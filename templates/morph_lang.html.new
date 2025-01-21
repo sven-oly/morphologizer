@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+  <head>
+
+    <script type="text/javascript">
+      function get_morph_data(caller_function, text_source_id, output_id, lang_code) {
+          // Gets informatino from the back end and puts results into the output area specified.
+          //console.log("get_morph_data" + caller_function + ' ' + text_source + ' ' + output_id);
+          const input_source = document.getElementById(text_source_id);
+          const input_text = input_source.value;
+          const output_element = document.getElementById(output_id);
+
+          let req = new XMLHttpRequest();
+          req.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  const data = JSON.parse(this.responseText);
+                  output_element.value = data;
+              } else {
+                  output_element.value = 'Status = ' + this.status;
+              }
+          };
+
+          let target_list = [];
+          target_list.push('function=' + caller_function);
+          target_list.push('lang_code=' + lang_code);
+          target_list.push('input_text=' + input_text.trim());
+          const target = target_list.join('&');
+          
+/*          req.open('POST', target);
+          req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+          req.send(");
+*/
+          req.open('POST', '/get_morph_results/', true);
+          req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+          req.send(target);
+      }
+    </script>
+    
+  </head>
+  <body>
+    <h1>Morphy - main</h1>
+    <p>A morphological generator and parser for {{lang_name}}({{lang_code}}.
+    <!-- Input box -->
+    <h2>Generator</h2>
+    <form onsubmit="get_morph_data('generate', 'gen_text', 'generate_response', '{{lang_code}}');">
+    <label for="gen_text">Generate:</label>
+    <input type="text" id="gen_text" name="gen_text" size="50">
+    <input type="submit" value="Submit">
+    </form>
+    <textarea id="generate_response" cols="50"/>
+    </textarea>
+
+    <h2>Parser</h2>
+    <form onsubmit="get_morph_data('parse', 'parse_text', 'parse_response', '{{lang_code}}');">
+    <label for="parse_text">Parse:</label>
+    <input type="text" id="parse_text" name="parse_text" size="50">
+    <input type="submit" value="Submit">
+    </form>
+    <textarea id="parse_response" cols="50"/>
+    </textarea>
+
+    <h2>Info</h2>
+    <p>Grammar rules: {{rules}}
+      
+
+
+  </body>
+  </html>

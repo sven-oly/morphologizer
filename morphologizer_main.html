@@ -1,10 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script>
+      function onPageLoad() {
+      }
+      function pickLangFunc(id) {
+          const selector = document.getElementById(id);
+          const value = selector.value;
+          // Now call the backend
+          open('/select/?lang_code=' + value, target="_blank");
+      }
+      </script>
   </head>
 
-  <body>
-    <h1>Morphologizer for {{lang}}</h1>
-    <p>Getting started</p>
+  <body onload="onPageLoad()">
+    <h1>Morphologizer</h1>
+    <p>Pick a language</p>
+    <input type="button" onclick="pickLangFunc('lang_list');" value="Choose language">
+    <select name="lang_options" id="lang_list">
+      {% for code in lang_list %}
+      <option value="{{code}}">{{code}}</option>
+      {% endfor %}
+    </select>
+      </input>
+    <p></p>
   </body>
 </html>

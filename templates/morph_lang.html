@@ -19,12 +19,10 @@
               if (this.readyState == 4 && this.status == 200) {
                   alert(this.responseText);
                   const raw_data = this.responseText;
-                  //const data = JSON.parse(raw_data);
-                  //alert('data = ' + data);
-                  output_element.value = raw_data;
+                  // Try to force a newline here.
+                  output_element.value = raw_data.replace(",", ",<br />");
                   const x = 2;
               } else {
-                  // output_element.value = 'Status = ' + this.status;
                   const x = 1;
               }
           };
@@ -97,6 +95,19 @@
           req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
           req.send(target);
       }
+
+      const sample_matcher = /\'([^\']*)\'/g;
+      function populate_from_sample(selector) {
+          const item_strings = [...selector.value.matchAll(sample_matcher)];
+
+          // Put these values into the input areas.
+          // Put these values into the input areas.
+          const parse_input = document.getElementById('parse_text');
+          parse_input.value = item_strings[0][1];
+          
+          const gen_input = document.getElementById('gen_text');
+          gen_input.value = item_strings[1][1];
+      }
     </script>
     
   </head>
@@ -119,7 +130,7 @@
     {% endif %}
 
     <h2>Parser</h2>
-    <form action="/get_morph_results" method="post">
+    <form action="/get_morph_results" method="
     <label for="parse_text">Parse:</label>
     <input type="text" id="parse_text" name="parse_text" size="80">
     <input type="button" id='btb-parse' onclick="get_parse_data();">Get parse</button>
@@ -134,7 +145,14 @@
     <h2>Info</h2>
     <p>Grammar rules: {{rules}}
       
+    <h2>Samples for testing</h2>
 
+   <!-- samples to populate quickly for testing -->
+   <select id='samples' name='samples' onchange="populate_from_sample(this)">
+   {% for sample in samples %}
+     <option value="{{sample}}">{{sample}}</option>
+   {% endfor %}
+   </select>
 
   </body>
   </html>

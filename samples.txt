@@ -11,4 +11,10 @@ kaa^k^ᎣᎩᏍᎦ         [NGT]+[1S-inc-Sub/3S-inanimate-Obj]+ᎣᎩᏍᎦ+[V]+
 kvv^kw^ᎣᎩᏍᎦ      [NGT]+[3S-Sub/1S-inc-Obj]+ᎣᎩᏍᎦ+[V]+[PresCont]
 Ꭼ^wa^ᏍᏕᎸh^ᎥᎢ     [NGT]+[3S-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[Completive]+[ExpPast]
 
+20-Jan-2025
 
+Ꭶꭲ                [1S-inc-Sub/3S-inanimate-Obj]+ᎠᎢ+[V]+[PresCont]
+ᎪᎩᏍᎦ          [1S-inc-Sub/3S-inanimate-Obj]+ᎣᎩᏍᎦ+[V]+[PresCont]  OR  [NGT]+[3S-Sub/3S-inanimate-Obj]+ᎣᎩᏍᎦ+[V]+[PresCont]
+Ꮵꮝꮥꮅꭽ        [1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont]
+Ꭰꭺꭹꮝꭶ       [3s-Obj]+ᎣᎩᏍᎦ+[V]+[PresCont]
+ᎬꭹꮝꮥꮈhᎥᎢ     [NGT]+[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[Completive]+[ExpPast]

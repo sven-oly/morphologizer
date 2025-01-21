@@ -9,6 +9,8 @@ from flask import Flask, render_template, stream_with_context, request, Response
 # The rules for particular morphologizers
 from cherokee_morphy import cherokee_morphy
 
+import samples
+
 import datetime
 
 from io import BytesIO
@@ -50,12 +52,16 @@ def hello():
 @app.route('/cherokee/')
 def morphy_cherokee():
     #morpher = cherokee_morphy.cherokee_morphy
-    morpher = morphers['chr']
+    lang_code = 'chr'
+    morpher = morphers[lang_code]
+    chr_samples = samples.samples[lang_code]
+
     return render_template(
         'morph_lang.html',
         lang_name='ᏣᎳᎩ',
-        lang_code='chr',
+        lang_code=lang_code,
         rules=len(morpher.rules),
+        samples=chr_samples,
         use_textarea=1
     )
 

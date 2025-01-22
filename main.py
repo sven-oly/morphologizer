@@ -61,7 +61,7 @@ def morphy_cherokee():
 
     return render_template(
         'morph_lang.html',
-        gloss_parts=morpher.gloss,
+        gloss_parts=morpher.gloss.gloss_parts,
         lang_name='ᏣᎳᎩ',
         lang_code=lang_code,
         rules=len(morpher.rules),

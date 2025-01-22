@@ -2,6 +2,13 @@
 <html>
   <head>
 
+    <style>
+      p.radio, div.radio {
+          text-indent: -15px;
+          padding-left: 50px;
+      }
+    </style>
+
     <script type="text/javascript">
 
       // Global language code
@@ -108,6 +115,19 @@
           const gen_input = document.getElementById('gen_text');
           gen_input.value = item_strings[1][1];
       }
+
+      function change_generate_option(selection) {
+          
+      }
+
+      // Gets all the paramters, eliminating the "None" values, and combining
+      function get_generate_parameters() {
+          // Surround each with [] and combine with '+'
+          // {% for part in gloss_parts.keys() %}
+          // something
+          // {% endfor %}
+      }
+
     </script>
     
   </head>
@@ -115,7 +135,28 @@
     <h1>Morphy - main</h1>
     <p>A morphological generator and parser for {{lang_name}} ({{lang_code}}).
     <!-- Input box -->
-    <h2>Generator</h2>
+      <h2>Generator</h2>
+      <div id='gloss' padding-left=3>
+        {% for part in gloss_parts.keys() %}
+        {% set part_index = loop.index %}
+        <p class='radio'>
+          <div class="radio">
+          <b>{{part}}:</b>
+          <input type="radio" id="{{part}}_{{val}}" name="{{part}}" value=None}>
+          <label for="{{part}}_{{val}}">None</label>
+          {% for val in gloss_parts.get(part) %} {{value}}
+          <input type="radio" id="{{part}}_{{val}}" name="{{part}}" value={{val}} onclick="change_generate_option(this)">
+          <label for="{{part}}_{{val}}">{{val}}</label>
+          {% endfor %}
+          </div>
+        </p>
+        {% endfor %}
+        <label for="gen_params">Generate parameters:</label>
+        <textarea id='gen_params'></textarea>
+        <br />
+      </div>
+<br />
+
     <form action="/get_morph_results" method="post">
     <label for="gen_text">Generate:</label>
     <input type="text" id="gen_text" name="gen_text" size="80">
@@ -156,3 +197,4 @@
 
   </body>
   </html>
+

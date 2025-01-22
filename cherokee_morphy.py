@@ -364,28 +364,28 @@ class gloss():
         ]
         
         self.after_verb = [
-            '[Completive]',
-            '[DeVerbalNoun]',
-            '[Immediate]',
-            '[Incompletive]',
-            '[PresCont]'
+            'Completive',
+            'DeVerbalNoun',
+            'Immediate',
+            'Incompletive',
+            'PresCont'
         ]
 
         self.stem2_and_4final = [
-            '[AbsFut]',
-            '[ExpPast]',
-            '[NomAbilityOrObligation]',
-            '[NomAbility]',
-            '[NonExpPast]',
+            'AbsFut',
+            'ExpPast',
+            'NomAbilityOrObligation',
+            'NomAbility',
+            'NonExpPast',
         ]
 
         self.prefix = [
-            '[IRR]',
-            '[NGI]',
-            '[NGT]',
-            '[PRT]',
-            '[REL]',
-            '[TRN]',
+            'IRR',
+            'NGI',
+            'NGT',
+            'PRT',
+            'REL',
+            'TRN',
         ]
 
         self.gloss_parts = {

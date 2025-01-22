@@ -150,7 +150,7 @@
    <!-- samples to populate quickly for testing -->
    <select id='samples' name='samples' onchange="populate_from_sample(this)">
    {% for sample in samples %}
-     <option value="{{sample}}">{{sample}}</option>
+     <option value="{{sample}}">#{{loop.index}}: {{sample}}</option>
    {% endfor %}
    </select>
 

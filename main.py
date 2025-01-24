@@ -9,6 +9,8 @@ from flask import Flask, render_template, stream_with_context, request, Response
 # The rules for particular morphologizers
 from cherokee_morphy import cherokee_morphy
 
+import cher_morph_defs
+
 import samples
 
 import datetime
@@ -32,6 +34,7 @@ debug = False
 
 morphers = {
     'chr': cherokee_morphy(),
+    'chr_cher': cher_morph_defs.morph_chr_syllabary()
 }
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app

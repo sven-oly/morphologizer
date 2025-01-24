@@ -22,6 +22,46 @@ class morph_definitions():
 class morph_defs_latin():
     def __init__(self):
     
+        self.stems = {
+            'setA': [
+                "ji^",
+                "iinii^",
+                "iitii^",
+                "oostii^",
+                "oojii^",
+                "hi^",
+                "stii^",
+                "iijii^",
+                "a^",
+                "ka^",
+                "anii^"
+            ],
+            'setB': [
+                "aki^",
+                "kinii^",
+                "iikii^",
+                "ookinii^",
+                "ookii^",
+                "ja^",
+                "stii^",
+                "iijii^",
+                "uu^",
+                "uunii^",
+            ],
+            'animate_3SO': [
+                "jii^",
+                "eenii^",
+                "eetii^",
+                "oostii^",
+                "oojii^",
+                "hii^",
+                "eestii^",
+                "eejii^",
+                "a^",
+                "ka^",
+                "anii^"]
+        }
+
         #Set A and B (Intransitive Verbs or Transitive Verbs with a 3S Inanimate Object)
         self.setA_pre = [("'[1S-inc-Sub/3S-inanimate-Obj]+'", "ji^"), \
                          ("'[1D-inc-Sub/3S-inanimate-Obj]+'", "iinii^"), \
@@ -388,12 +428,13 @@ class gloss():
             'TRN',
         ]
 
+        # TODO: add the punctuation needed around each item, e.g., [ and ]
         self.gloss_parts = {
+            'prefix': self.prefix,
             'verb1': self.part1,
-            'verb2': self.part2,
+            'verb2': self.part2,  # '/' before, and insert after verb1
             'after verb2': self.after_verb,
             'stem and final': self.stem2_and_4final,
-            'prefix': self.prefix
         }
         
 
@@ -430,3 +471,13 @@ class cherokee_morphy(morphy_base):
         test_results = 'TEST'
         return test_results
 
+
+
+def main():
+    morph_cher = cherokee_morphy()
+#    morph_latn = morph_chr_latin()
+
+
+if __name__ == '__main__':
+    main()
+    

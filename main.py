@@ -34,7 +34,8 @@ debug = False
 
 morphers = {
     'chr': cherokee_morphy(),
-    'chr_cher': cher_morph_defs.morph_chr_syllabary()
+    'chr_cher': cher_morph_defs.morph_chr_syllabary(),
+    'chr_latn': cher_morph_defs.morph_chr_latin(),
 }
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
@@ -59,16 +60,20 @@ def hello():
 def morphy_cherokee():
     # TODO: Generalize to other languages
     lang_code = 'chr'
-    morpher = morphers[lang_code]
-    chr_samples = samples.samples[lang_code]
+    base_morpher = morphers['chr']
+    morpher = morphers['chr_latn']
+    # morpher = morphers['chr_cher']  # Using the syllabary
+
+    chr_samples = samples.samples['chr']
 
     return render_template(
         'morph_lang.html',
-        gloss_parts=morpher.gloss.gloss_parts,
+        gloss_parts=base_morpher.gloss.gloss_parts,
         lang_name='ᏣᎳᎩ',
         lang_code=lang_code,
         rules=len(morpher.rules),
         samples=chr_samples,
+        stems=morpher.stems,
         use_textarea=1
     )
 
@@ -96,6 +101,8 @@ def morphy_results():
         result = morpher.generate(input_text)
     elif requested_function == 'parse':
         result = morpher.parse(input_text)
+    elif requested_function == 'paradigm':
+        result = morpher.paradigm(input_text)
     else:
         # Unknown
         print('unknown result = %s' % result)

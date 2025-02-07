@@ -103,6 +103,34 @@
           req.send(target);
       }
 
+     
+      function get_paradigm_data() {
+          // Gets informatino from the back end and puts results into the output area specified.
+          const input_source = document.getElementById('paradigm_text');
+          const input_text = input_source.value;
+          const output_element = document.getElementById('paradigm_response');
+
+          let req = new XMLHttpRequest();
+          req.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  const raw_data = this.responseText;
+                  const result_data = JSON.parse(raw_data);
+                  output_element.value = result_data['result_text'];
+              }
+          };
+
+          let target_list = [];
+          target_list.push('function=' + 'paradigm');
+          target_list.push('lang_code=' + lang_code);
+          const input_text_ready = encodeURIComponent(input_text.trim());
+          target_list.push('input_text=' + input_text_ready);
+          const target = target_list.join('&');
+          
+          req.open('POST', '/get_morph_results/', true);
+          req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+          req.send(target);
+      }      
+
       const sample_matcher = /\'([^\']*)\'/g;
       function populate_from_sample(selector) {
           const item_strings = [...selector.value.matchAll(sample_matcher)];
@@ -114,6 +142,12 @@
           
           const gen_input = document.getElementById('gen_text');
           gen_input.value = item_strings[1][1];
+      }
+
+      function populate_stem(selector) {
+          // TODO: Fill in the stem field from the selected item
+          const out_area = document.getElementById('gen_params');
+          out_area.value = out_area.innerHTML = selector.value;
       }
 
       function change_generate_option(selection) {
@@ -136,25 +170,7 @@
     <p>A morphological generator and parser for {{lang_name}} ({{lang_code}}).
     <!-- Input box -->
       <h2>Generator</h2>
-      <div id='gloss' padding-left=3>
-        {% for part in gloss_parts.keys() %}
-        {% set part_index = loop.index %}
-        <p class='radio'>
-          <div class="radio">
-          <b>{{part}}:</b>
-          <input type="radio" id="{{part}}_{{val}}" name="{{part}}" value=None}>
-          <label for="{{part}}_{{val}}">None</label>
-          {% for val in gloss_parts.get(part) %} {{value}}
-          <input type="radio" id="{{part}}_{{val}}" name="{{part}}" value={{val}} onclick="change_generate_option(this)">
-          <label for="{{part}}_{{val}}">{{val}}</label>
-          {% endfor %}
-          </div>
-        </p>
-        {% endfor %}
-        <label for="gen_params">Generate parameters:</label>
-        <textarea id='gen_params'></textarea>
-        <br />
-      </div>
+
 <br />
 
     <form action="/get_morph_results" method="post">
@@ -183,6 +199,20 @@
     </textarea>
     {% endif %}
 
+    <h2>Paradigm</h2>
+    <form action="/get_morph_results" method="
+    <label for="parse_text">Paradign:</label>
+    <input type="text" id="paradigm_text" name="paradigm_text" size="80">
+    <input type="button" id='btb-paradigm' onclick="get_paradigm_data();">Get paradigm</button>
+    </form>
+
+    {% if use_textarea %}
+    <label for="paradigm_response">Paradigm response</label>
+    <br />
+    <textarea id="paradigm_response" cols="80"/>
+    </textarea>
+    {% endif %}
+
     <h2>Info</h2>
     <p>Grammar rules: {{rules}}
       
@@ -194,6 +224,39 @@
      <option value="{{sample}}">#{{loop.index}}: {{sample}}</option>
    {% endfor %}
    </select>
+
+   <div id='gloss' padding-left=3>
+     <h3>Select parts (not yet implemented)</h3>
+     {% for part in gloss_parts.keys() %}
+     {% set part_index = loop.index %}
+     <p class='radio'>
+       <div class="radio">
+         <b>{{part}}:</b>
+         <input type="radio" id="{{part}}_{{val}}" name="{{part}}" value=None}>
+         <label for="{{part}}_{{val}}">None</label>
+         {% for val in gloss_parts.get(part) %} {{value}}
+         <input type="radio" id="{{part}}_{{val}}" name="{{part}}" value={{val}} onclick="change_generate_option(this)">
+         <label for="{{part}}_{{val}}">{{val}}</label>
+         {% endfor %}
+       </div>
+     </p>
+     {% endfor %}
+
+     <p>
+       <label for="stems">Choose a stem:</label>
+       <select id='stems' name='stems' onchange="populate_stem(this)">
+         {% for stem_set in stems %}
+         {% for stem in stems[stem_set] %}
+         <option value="{{stem}}">#{{loop.index}}: {{stem_set}}: {{stem}}</option>
+         {% endfor %}
+
+         {% endfor %}
+       </select>
+     <p>
+       <label for="gen_params">Generate parameters:</label>
+       <textarea id='gen_params'></textarea>
+       <br />
+   </div>
 
   </body>
   </html>

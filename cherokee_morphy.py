@@ -7,6 +7,9 @@ Created on Mon Oct  7 12:27:05 2024
 """
 from pyfoma import FST
 from pyfoma import Paradigm
+
+import json
+import logging
 import sys
 
 from morphy_base import morphy_base
@@ -450,6 +453,7 @@ class cherokee_morphy(morphy_base):
         self.fsts = defs.fsts
         self.final = defs.final
         self.rules = defs.rules
+        self.lexicon = defs.Lexicon
 
         # The gloss symbols for this morphologizer
         self.gloss = gloss()
@@ -467,6 +471,14 @@ class cherokee_morphy(morphy_base):
 
         return result
 
+    def paradigm(self, text):
+        # Paradigm(lexicon)
+        logging.debug('Paradigm called!')
+        result = Paradigm(self.lexicon, text)
+        print('PARADIGM result = %s' % len(result.para))
+        
+        return result.para
+
     def test(self):
         test_results = 'TEST'
         return test_results
@@ -475,6 +487,7 @@ class cherokee_morphy(morphy_base):
 
 def main():
     morph_cher = cherokee_morphy()
+    morph_cher.paradigm('.*')
 #    morph_latn = morph_chr_latin()
 
 

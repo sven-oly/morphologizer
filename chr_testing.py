@@ -1,0 +1,45 @@
+generate_tests = [
+
+    [[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[Incompletive]+[Habitual], ji^steeliisk^oʔi, ᏥᏍᏕᎵᏍᎪᎢ,],
+    [[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[Incompletive]+[ExpPast], ji^steeliisk^vvʔi, ᏥᏍᏕᎵᏍᎬ,],
+    [[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[Incompletive]+[NonExpPast], ji^steeliisk^eʔi, ᏥᏍᏕᎵᏍᎨ,],
+    [[1S-inc-Sub/3S-inanimate-Obj]+ᎠᎢ+[V]+[Incompletive]+[Habitual], k^aaɁis^oʔi, ᎦᎢᏍᎣ,],
+    [[1S-inc-Sub/3S-inanimate-Obj]+ᎠᎢ+[V]+[Incompletive]+[ExpPast], k^aaɁis^vvʔi, ᎦᎢᏍᎥ,],
+    [[1S-inc-Sub/3S-inanimate-Obj]+ᎠᎢ+[V]+[Incompletive]+[AbsFut], k^aaɁis^eesti, ᎦᎢᏍᎡᏍ,],
+    [[1S-inc-Sub/3S-inanimate-Obj]+ᏅᏥᏙᎭ+[V]+[Incompletive]+[Habitual],ji^nvvjiitooh^oʔi, ᏥᏅᏥᏙᎰ,],
+
+    [[1S-inc-Sub/3S-inanimate-Obj]+ᏅᏥᏙᎭ+[V]+[Completive]+[ExpPast], aki^nvvjiitool^vvʔi, ᎠᎩᏅᏥᏙᎸ,],
+    [[1S-inc-Sub/3S-inanimate-Obj]+ᎡᏡᎦ+[V]+[Completive]+[AbsFut], akw^eehluhn^eesti, ᎠᏇᏡᏁᏍ,],
+    [[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[DeVerbalNoun]+[NomAbilityOrObligation], akii^stehlt^i, ᎠᎩᏍᏕᎸ,],
+    [[3P-Sub/1S-inc-Obj]+ᎣᎩᏍᎦ+[V]+[PresCont], kvvkw^ookiska, ᎬᏉᎩᏍ,],
+    [[2S-Sub/1S-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont], ski^steeliha, ᏍᎩᏍᏕᎵ,],
+    [[1S-inc-Obj]+ᎣᎩᏍᎦ+[V]+[PresCont], vvkw^ookiska, ᎥᏉᎩᏍ,],
+    [[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont], ji^steeliha, ᏥᏍᏕᎵ,],
+    [[1S-inc-Sub/3S-inanimate-Obj]+ᎠᎢ+[V]+[PresCont], k^aaʔi, Ꭶ,],
+    [[3S-Sub/1P-inc-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont], iikii^steeliha, ᎢᎩᏍᏕᎵ,],
+    [[NGT]+[3S-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont], kvv^steeliha, ᎬᏍᏕᎵ,],
+    [[NGT]+[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[Completive]+[ExpPast], kvv^ki^steelvvh^vvʔi, ᎬᎩᏍᏕᎸhᎥ,],
+
+    [[NGT]+[3S-Sub/1S-inc-Obj]+ᎣᎩᏍᎦ+[V]+[PresCont], kvv^kw^ookiska, ᎬᏉᎩᏍ,],
+    [[NGT]+[3P-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[Completive]+[ExpPast], kvv^wanii^steelvvh^vvʔi, ᎬᏩᏂᏍᏕᎸᎲ,],
+    
+    [[2S-Sub/3S-animate-Obj]+ᎣᎩᏍᎦ+[V]+[PresCont], hiiy^ookiska, ᎯᏲᎩᏍ,],
+    [[IRR]+[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont], yi^ji^steeliha, ᏱᏥᏍᏕᎵ,],
+    [[IRR]+[NGT]+[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont], yi^kaa^ji^steeliha, ᏱᎦᏥᏍᏕᎵ,],
+    [[IRR]+[3S-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[Completive]+[ExpPast], y^uu^steelvvh^vvʔi, ᏳᏍᏕᎸᎲ,],
+    [[IRR]+[2S-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont], hy^i^steeliha, ᏱᏍᏕᎵ,],
+    [[IRR]+[TRN]+[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont], yu^wi^ji^steeliha, ᏳᏫᏥᏍᏕᎵ,],
+    [[IRR]+[TRN]+[1P-ex-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont], yu^w^oojii^steeliha, ᏳᏬᏥᏍᏕᎵ,],
+    [[REL]+[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont], ji^ji^steeliha, ᏥᏥᏍᏕᎵ,],
+    [[REL]+[3S-Sub/1S-inc-Obj]+ᎣᎩᏍᎦ+[V]+[PresCont], j^akw^ookiska, ᏣᏉᎩᏍ,],
+    [[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[Incompletive], Empty string,(Incompletive stem requires a suffix,],
+
+    [[3P-Sub/1S-inc-Obj]+ᎣᎩᏍᎦ+[V]+[PresCont]+[Habitual], Empty string,  (Present Continuous Stem doesn’t take a suffix,],
+
+     [[IRR]+[REL]+[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont], Empty string, ([IRR] and [REL] cannot both be attached to the verb),],
+     [[IRR]+[NGI]+[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont], Empty string, ([IRR] and [NGI] cannot both be attached to the verb),],
+     [[REL]+[NGI]+[1S-inc-Sub/3S-inanimate-Obj]+ᏍᏕᎵᎭ+[V]+[PresCont] Empty, string, (, [REL], and, [NGI], cannotboth, be, attached, to, the, verb),],
+     [[1S-inc-Sub/3S-inanimate-Obj]+ᎠᎢ+[V]+[DeVerbalNoun]+[NomAbilityOrObligation], Empty string, (This verb does not have a DeVerbalNoun stem),],
+     [[1S-inc-Sub/3S-inanimate-Obj]+ᎠᎢ+[V]+[Immediate], Empty string, (This verb does not have an Immediate stem),],
+     [[1S-inc-Sub/3S-inanimate-Obj]+ᏁᎫᏣ+[V]+[DeVerbalNoun]+[NomAbilityOrObligation], Empty string, (This verb does not have a DeVerbalNoun stem),],
+]

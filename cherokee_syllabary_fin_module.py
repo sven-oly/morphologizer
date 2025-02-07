@@ -10,31 +10,31 @@ from pyfoma import Paradigm
 import sys
 
 
-#How have things been spelled here?
-    #The users will interact with this script purely in syllabary, they will not see that the backend
-    #is a mix of syllabary and transcription. However, to anyone who adds to or updates Morphy, the
-    #system used here is relevant (and I'm still hoping to simplify this further)
+# How have things been spelled here?
+# The users will interact with this script purely in syllabary, they will not see that the backend
+# is a mix of syllabary and transcription. However, to anyone who adds to or updates Morphy, the
+# system used here is relevant (and I'm still hoping to simplify this further)
     
-    #When a vowel final element attaches to a vowel initial element...
-        #E.g. person prefix "iinii" [1D-inc-Sub/3S-inanimate-Obj] attaching to a vowel initial stem
-        #such as 'ookiska' ᎣᎩᏍᎦ''+[V]''+[PresCont]
-    #...the final vowel drops. (the example above would be "iinookiska"). However, in Cherokee syllabary,
-    #each character represents a consonant and vowel combination, meaning that separate rules would be
-    #needed for each combination to successfully drop the correctvowel and attach the remaining consonant 
-    #to the remaining vowel.
-    #Therefore, final syllables of each component have been written in transctiption, allowing for all
-    #vowels to be dropped using a single rule. A set of rewrite rules then converts what is left at the
-    #end to syllabary. While still a lot of rules, this is significantly less than they would be if we
-    #started in syllabary. That said, I'm open to ideas on how else to approach this...
+# When a vowel final element attaches to a vowel initial element...
+# E.g. person prefix "iinii" [1D-inc-Sub/3S-inanimate-Obj] attaching to a vowel initial stem
+# such as 'ookiska' ᎣᎩᏍᎦ''+[V]''+[PresCont]
+# ...the final vowel drops. (the example above would be "iinookiska"). However, in Cherokee syllabary,
+# each character represents a consonant and vowel combination, meaning that separate rules would be
+# needed for each combination to successfully drop the correctvowel and attach the remaining consonant 
+# to the remaining vowel.
+# Therefore, final syllables of each component have been written in transctiption, allowing for all
+# vowels to be dropped using a single rule. A set of rewrite rules then converts what is left at the
+# end to syllabary. While still a lot of rules, this is significantly less than they would be if we
+# started in syllabary. That said, I'm open to ideas on how else to approach this...
     
 
-#Person Prefixes
-
-#Set A and B (Intransitive Verbs or Transitive Verbs with a 3S Inanimate Object)
 
 class chr_syllabary_fin():
     def __init__(self):
 
+        # Person Prefixes
+
+        # Set A and B (Intransitive Verbs or Transitive Verbs with a 3S Inanimate Object)
         setA_pre = [("'[1S-inc-Sub/3S-inanimate-Obj]+'", "Ꮵ^"),
                     ("'[1D-inc-Sub/3S-inanimate-Obj]+'", "Ꭲnii^"), \
                     ("'[1P-inc-Sub/3S-inanimate-Obj]+'", "Ꭲtii^"), \
@@ -58,7 +58,7 @@ class chr_syllabary_fin():
                     ("'[3S-Sub/3S-inanimate-Obj]+'", "Ꭴ^"), \
                     ("'[3P-Sub/3S-inanimate-Obj]+'", "Ꭴnii^")]
 
-        #Transitive Verbs Only
+        # Transitive Verbs Only
 
         animate_3SO = [("'[1S-inc-Sub/3S-animate-Obj]+'", "Ꮵi^"), \
                        ("'[1D-inc-Sub/3S-animate-Obj]+'", "Ꭱnii^"), \
@@ -133,24 +133,24 @@ class chr_syllabary_fin():
         fin_person = setA_tups + setB_tups + animate_obj_tups + subj_3S_tups + subj_3P_tups + two_loc_tups + ob_foc_tups
 
 
-        #Morpheme Concatenation. Currently includes:
-        #6 optionsal prepronominal prefixes (are attached before the person marker)
-        #All person marking paradigms (required)
-        #Verb stems (20 verbs, 5 stems each)
-        #Present Continuous, Incompletive, Immediate, Completive, DeVerbal Noun/Infinitive forms
-        #These are divided into Set A and Set B and Transitive and Intransitive, all of which affect the
-        #type of person marking they can take
-        #Final suffixes (required, specific suffix depends on type of verb stem)
+        # Morpheme Concatenation. Currently includes:
+        # 6 optionsal prepronominal prefixes (are attached before the person marker)
+        # All person marking paradigms (required)
+        # Verb stems (20 verbs, 5 stems each)
+        # Present Continuous, Incompletive, Immediate, Completive, DeVerbal Noun/Infinitive forms
+        # These are divided into Set A and Set B and Transitive and Intransitive, all of which affect the
+        # type of person marking they can take
+        # Final suffixes (required, specific suffix depends on type of verb stem)
 
-        #12 prepronominal prefixes in total (currently 6 have been implemented)
-        #Titles Prefix1-7 indicate position of the prefixes in order if they cooccur
-        #Prefixes within the same group cannot occur together
-        #e.g. a verb cannot take both an irrealis (IRR) and a relativizer (REL)
-        #There are also some long distance co-occurence restrictions
-        #(e.g. verbs cannot take both REL and NGT prefixes)
-        #Normally these would be handled using flag diacritics, but this functionality
-        #is currently unavailable in pyfoma. Therefore, we will need to handle them through
-        #our front-end interface instead
+        # 12 prepronominal prefixes in total (currently 6 have been implemented)
+        # Titles Prefix1-7 indicate position of the prefixes in order if they cooccur
+        # Prefixes within the same group cannot occur together
+        # e.g. a verb cannot take both an irrealis (IRR) and a relativizer (REL)
+        # There are also some long distance co-occurence restrictions
+        # (e.g. verbs cannot take both REL and NGT prefixes)
+        # Normally these would be handled using flag diacritics, but this functionality
+        # is currently unavailable in pyfoma. Therefore, we will need to handle them through
+        # our front-end interface instead
         
         Grammar = {}
         Grammar["S"] = [("", "Prefix1")]
@@ -176,32 +176,32 @@ class chr_syllabary_fin():
         Grammar["Transitive_Verbs"] = [("", "Trans_SetA"), ("", "Trans_SetB")]
 
 
-        #Verb Stems. The gloss always uses the present continuous form in syllabary. This is for 2 reasons:
-        #Morphy can be called in transcription or in syllabary using the same gloss, do not have to
-        #request the forms separately. We are assumiing that users will want to generate the finaal
-        #Cherpkee words in syllabary, but that having a transcribed version with morpheme boundaries marked
-        #alongside it will be useful for language learners
+        # Verb Stems. The gloss always uses the present continuous form in syllabary. This is for 2 reasons:
+        # Morphy can be called in transcription or in syllabary using the same gloss, do not have to
+        # request the forms separately. We are assumiing that users will want to generate the finaal
+        # Cherpkee words in syllabary, but that having a transcribed version with morpheme boundaries marked
+        # alongside it will be useful for language learners
     
-        #Each verb has 5 stem forms. While researchers have worked on finding a base stem that is then
-        #altered to form each of the 5 forms, this has proven complicated, and the descriptive grammar
-        #this script is based on simple treats them as 5 separate stems (and the Cherokee),
-        #so I have done the same. However, if each stem was glosses in its actual form, users would
-        #alreadt need to know what the different stem forms for a verb are in order to request it.
-        #However, this should be the job of the morphologizer. So, we use the Present Continuous stem
-        #as the 'base' form (the descriptive grammar treats this as the citation form, and the dictionary
-        #uses the third person present continuous as its main verb listing). As long as users can ask for
-        #that, they can then also select the actual form they want, e.g. Incompletive, and the correct
-        #form will be generated.
+        # Each verb has 5 stem forms. While researchers have worked on finding a base stem that is then
+        # altered to form each of the 5 forms, this has proven complicated, and the descriptive grammar
+        # this script is based on simple treats them as 5 separate stems (and the Cherokee),
+        # so I have done the same. However, if each stem was glosses in its actual form, users would
+        # alreadt need to know what the different stem forms for a verb are in order to request it.
+        # However, this should be the job of the morphologizer. So, we use the Present Continuous stem
+        # as the 'base' form (the descriptive grammar treats this as the citation form, and the dictionary
+        # uses the third person present continuous as its main verb listing). As long as users can ask for
+        # that, they can then also select the actual form they want, e.g. Incompletive, and the correct
+        # form will be generated.
 
-        #Completive and DeVerbal Noun stems are always Set B,regardless of whether the other stems take Set A
-        #or B prefixes
+        # Completive and DeVerbal Noun stems are always Set B,regardless of whether the other stems take Set A
+        # or B prefixes
 
-        #Another note on spelling:
-        #Some verb stems (specifically the Incompletive, Completive, and DeVerbal Noun forms) end in a
-        #consonant - when they attach to a final suffix, this consonant will combine with a vowel to make
-        #a full syllable. However, that vowel depends on the suffix taken, and so is not included in the
-        #stem. Syllabary does not allow for a consonant to be written alone (except /s/), and so these final
-        #consonants are written in transcription, and rewrite rules convert them to full syllabary at the end.
+        # Another note on spelling:
+        # Some verb stems (specifically the Incompletive, Completive, and DeVerbal Noun forms) end in a
+        # consonant - when they attach to a final suffix, this consonant will combine with a vowel to make
+        # a full syllable. However, that vowel depends on the suffix taken, and so is not included in the
+        # stem. Syllabary does not allow for a consonant to be written alone (except /s/), and so these final
+        # consonants are written in transcription, and rewrite rules convert them to full syllabary at the end.
 
         Grammar["Intrans_SetA"] = [(("'ᏬᏂᎭ''+[V]''+[PresCont]'", "ᏬᏂᎭ"), "#"), \
                                    (("'ᏬᏂᎭ''+[V]''+[Incompletive]'", "ᏬᏂᏍk"), "Habitual"), \
@@ -303,11 +303,11 @@ class chr_syllabary_fin():
                                  (("'ᏅᏆᎶᎠ''+[V]''+[Completive]'", "ᏅᏆᎶʔ"), "Stem2and4Final"), \
                                  (("'ᏅᏆᎶᎠ''+[V]''+[DeVerbalNoun]'", "ᏅᏆᎶᏍt"), "Stem5Final")]
 
-        #Final Suffixes (Required) - dependent on the verb stem
-        #Present Continuous and Immediate stems do not take a final suffix
-        #Incompletive stems can take either the habitual or one of the suffixes in Stem2and4Final
-        #Completive stems take one of the suffixes in Stem2and4Final
-        #Deverbal Noun/Infinitive stems take one of the suffixes in Stem5Final
+        # Final Suffixes (Required) - dependent on the verb stem
+        # Present Continuous and Immediate stems do not take a final suffix
+        # Incompletive stems can take either the habitual or one of the suffixes in Stem2and4Final
+        # Completive stems take one of the suffixes in Stem2and4Final
+        # Deverbal Noun/Infinitive stems take one of the suffixes in Stem5Final
         Grammar["Habitual"] = [(("'+[Habitual]'", "^ᎣᎢ"), "#"), \
                                ("", "Stem2and4Final")]
 
@@ -318,26 +318,26 @@ class chr_syllabary_fin():
         Grammar["Stem5Final"] = [(("'+[NomAbilityOrObligation]'", "^Ꭲ"), "#"), \
                                  (("'+[NomAbility]'", "^ᎢᎢ"), "#")]
 
-        #Turn the grammar defined above into an FST
+        # Turn the grammar defined above into an FST
         Lexicon = FST.rlg(Grammar, "S")
         Lexicon = Lexicon.epsilon_remove().determinize().minimize()
 
 
-        #Rewrite Rules
+        # Rewrite Rules
 
-        #Create list of fsts here, to be concatenated later
+        # Create list of fsts here, to be concatenated later
         fsts = {}
-        fsts['V'] = FST.re("[aeiouvᎠᎡᎢᎣᎤᎥ]")         # Vowels
+        fsts['V'] = FST.re("[aeiouvᎠᎡᎢᎣᎤᎥ]")         #  Vowels
 
 
-        #Numbered Rules relate to person markers.
-        #Rules 8 and 9 are for vowel dropping
-        #NGT rules relate to the negative time prefix
-        #TRN rules relate to the translocative prefix
-        #Metathesis and aspiration are phonological processes that
-        #occur when prefixes are attached in specific environments
-        #Cleanup rules remove unwanted characters e.g. extra morpheme boundary markers (^) or added \?
-        #Rules must be applied in the order below in order to work properly.
+        # Numbered Rules relate to person markers.
+        # Rules 8 and 9 are for vowel dropping
+        # NGT rules relate to the negative time prefix
+        # TRN rules relate to the translocative prefix
+        # Metathesis and aspiration are phonological processes that
+        # occur when prefixes are attached in specific environments
+        # Cleanup rules remove unwanted characters e.g. extra morpheme boundary markers (^) or added \?
+        # Rules must be applied in the order below in order to work properly.
 
         rule1 = FST.re("$^rewrite(Ꮵ:k / _ \^ $V)", fsts)
 
@@ -348,45 +348,45 @@ class chr_syllabary_fin():
         rule3 = FST.re("$^rewrite(Ꭹ:(kw) / _ \^ $V)", fsts)
 
         
-        #The transcription version of the script has 3 rules for metathesis, while there are
-        #only 2 here. This is intentional, the differences in the writing systems necessitate this.
+        # The transcription version of the script has 3 rules for metathesis, while there are
+        # only 2 here. This is intentional, the differences in the writing systems necessitate this.
         metathesis1 = FST.re("$^rewrite((i\^h):(\^) / (y|w|n) _ )", fsts)
         metathesis2 = FST.re("$^rewrite(Ꭿ:'' / (y|w|n)i\^ _ )", fsts)
 
-        #aspiration - transcription has 2 aspiration rules while here there is one, for the same reason
-        #as metathesis. Also we may need to add more to these as more verbs, affixes, and complexity is added
+        # aspiration - transcription has 2 aspiration rules while here there is one, for the same reason
+        # as metathesis. Also we may need to add more to these as more verbs, affixes, and complexity is added
         aspiration1 = FST.re("$^rewrite((ji\^h):(j\^))", fsts)
         aspiration2 = FST.re("$^rewrite((ji\^Ꭿ):(ji\^))", fsts)
 
-        #Translocative Prefix (we, [TRN]+) --> yi -> yu and ji -> ju before (wi-)
+        # Translocative Prefix (we, [TRN]+) --> yi -> yu and ji -> ju before (wi-)
         trn = FST.re("$^rewrite(i:u / (y|j) _ \^wi)", fsts)
 
-        #NGT Rules
-        #kaa + uu = kvv^wa 
+        # NGT Rules
+        # kaa + uu = kvv^wa 
         ngt1 = FST.re("$^rewrite((kaa\^Ꭴ):(Ꭼ\^wa))", fsts)
 
-        #kvv^wa^ + v = kvv^wa^
+        # kvv^wa^ + v = kvv^wa^
         ngt2 = FST.re("$^rewrite(Ꭵ:'' / Ꭼ\^wa\^ _ )", fsts)
 
-        #Kaa + aji (ᎠᏥ^) = k^eji
+        # Kaa + aji (ᎠᏥ^) = k^eji
         ngt3 = FST.re("$^rewrite(Ꭰ:Ꭱ / kaa\^ _ (Ꮵ|k)\^ )", fsts)
 
-        #Kaa + [eiov] = kaay^ + [eiov]
+        # Kaa + [eiov] = kaay^ + [eiov]
         ngt4 = FST.re("$^rewrite((kaa):(Ꭶy) / _ \^ [eiovᎡᎢᎣᎥ])", fsts)
 
-        #Kaa + a = kvv^
+        # Kaa + a = kvv^
         ngt5 = FST.re("$^rewrite((kaa\^(aa?|Ꭰ)):(kvv\^), longest = True, leftmost = True)", fsts)
 
-        #uu (SetB [3S-Sub/3S-inanimate-Obj])
+        # uu (SetB [3S-Sub/3S-inanimate-Obj])
         rule4 = FST.re("$^rewrite('':w / Ꭴ _ \^ [eouᎡᎣᎤ])", fsts)
 
         rule5 = FST.re("$^rewrite((Ꭴ\^Ꭵ):(ᎤᏩ\^))", fsts)
-        #Syllabary to syllabary
+        # Syllabary to syllabary
 
         rule6 = FST.re("$^rewrite(Ꭰ:'' / Ꭴ\^ _ )", fsts)
-        #uu will be in syllabary, a will not
+        # uu will be in syllabary, a will not
 
-        #rule7 --> Add later
+        # rule7 --> Add later
         cleanup1 = FST.re("$^rewrite(\^:'' / \^ _)", fsts)
 
         rule8 = FST.re("$^rewrite((aa?|ii?):'' / _ \^ $V, longest = True, leftmost = True)", fsts)
@@ -394,9 +394,9 @@ class chr_syllabary_fin():
 
         cleanup2 = FST.re("$^rewrite(\^:'')")
         
-        #Rules to convert any remaining transcription into syllabary.
+        # Rules to convert any remaining transcription into syllabary.
         
-        #kw -> vowel
+        # kw -> vowel
         fsts['kw_a'] = FST.re("$^rewrite((kwᎠ|kwaa?):Ꮖ, longest = True, leftmost = True)", fsts)
         fsts['kw_e'] = FST.re("$^rewrite((kwᎡ|kwee?):Ꮗ, longest = True, leftmost = True)", fsts)
         fsts['kw_i'] = FST.re("$^rewrite((kwᎢ|kwii?):Ꮘ, longest = True, leftmost = True)", fsts)
@@ -404,7 +404,7 @@ class chr_syllabary_fin():
         fsts['kw_u'] = FST.re("$^rewrite((kwᎤ|kwuu?):Ꮚ, longest = True, leftmost = True)", fsts)
         fsts['kw_v'] = FST.re("$^rewrite((kwᎥ|kwvv?):Ꮛ, longest = True, leftmost = True)", fsts)
         
-        #k -> vowel
+        # k -> vowel
         fsts['k_a'] = FST.re("$^rewrite((kᎠ|kaa?):Ꭶ, longest = True, leftmost = True)", fsts)
         fsts['k_e'] = FST.re("$^rewrite((kᎡ|kee?):Ꭸ, longest = True, leftmost = True)", fsts)
         fsts['k_i'] = FST.re("$^rewrite((kᎢ|kii?):Ꭹ, longest = True, leftmost = True)", fsts)
@@ -412,7 +412,7 @@ class chr_syllabary_fin():
         fsts['k_u'] = FST.re("$^rewrite((kᎤ|kuu?):Ꭻ, longest = True, leftmost = True)", fsts)
         fsts['k_v'] = FST.re("$^rewrite((kᎥ|kvv?):Ꭼ, longest = True, leftmost = True)", fsts)
 
-        #y -> vowel
+        # y -> vowel
         fsts['y_a'] = FST.re("$^rewrite((yᎠ|yaa?):Ꮿ, longest = True, leftmost = True)", fsts)
         fsts['y_e'] = FST.re("$^rewrite((yᎡ|yee?):Ᏸ, longest = True, leftmost = True)", fsts)
         fsts['y_i'] = FST.re("$^rewrite((yᎢ|yii?):Ᏹ, longest = True, leftmost = True)", fsts)
@@ -420,7 +420,7 @@ class chr_syllabary_fin():
         fsts['y_u'] = FST.re("$^rewrite((yᎤ|yuu?):Ᏻ, longest = True, leftmost = True)", fsts)
         fsts['y_v'] = FST.re("$^rewrite((yᎥ|yvv?):Ᏼ, longest = True, leftmost = True)", fsts)
 
-        #j -> vowel
+        # j -> vowel
         fsts['j_a'] = FST.re("$^rewrite((jᎠ|jaa?):Ꮳ, longest = True, leftmost = True)", fsts)
         fsts['j_e'] = FST.re("$^rewrite((jᎡ|jee?):Ꮴ, longest = True, leftmost = True)", fsts)
         fsts['j_i'] = FST.re("$^rewrite((jᎢ|jii?):Ꮵ, longest = True, leftmost = True)", fsts)
@@ -428,7 +428,7 @@ class chr_syllabary_fin():
         fsts['j_u'] = FST.re("$^rewrite((jᎤ|juu?):Ꮷ, longest = True, leftmost = True)", fsts)
         fsts['j_v'] = FST.re("$^rewrite((jᎥ|jvv?):Ꮸ, longest = True, leftmost = True)", fsts)
 
-        #w -> vowel
+        # w -> vowel
         fsts['w_a'] = FST.re("$^rewrite((wᎠ|waa?):Ꮹ, longest = True, leftmost = True)", fsts)
         fsts['w_e'] = FST.re("$^rewrite((wᎡ|wee?):Ꮺ, longest = True, leftmost = True)", fsts)
         fsts['w_i'] = FST.re("$^rewrite((wᎢ|wii?):Ꮻ, longest = True, leftmost = True)", fsts)
@@ -436,7 +436,7 @@ class chr_syllabary_fin():
         fsts['w_u'] = FST.re("$^rewrite((wᎤ|wuu?):Ꮽ, longest = True, leftmost = True)", fsts)
         fsts['w_v'] = FST.re("$^rewrite((wᎥ|wvv?):Ꮾ, longest = True, leftmost = True)", fsts)
 
-        #n -> vowel
+        # n -> vowel
         fsts['n_a'] = FST.re("$^rewrite((nᎠ|naa?):Ꮎ, longest = True, leftmost = True)", fsts)
         fsts['n_e'] = FST.re("$^rewrite((nᎡ|nee?):Ꮑ, longest = True, leftmost = True)", fsts)
         fsts['n_i'] = FST.re("$^rewrite((nᎢ|nii?):Ꮒ, longest = True, leftmost = True)", fsts)
@@ -444,7 +444,7 @@ class chr_syllabary_fin():
         fsts['n_u'] = FST.re("$^rewrite((nᎤ|nuu?):Ꮔ, longest = True, leftmost = True)", fsts)
         fsts['n_v'] = FST.re("$^rewrite((nᎥ|nvv?):Ꮕ, longest = True, leftmost = True)", fsts)
 
-        #t -> vowel
+        # t -> vowel
         fsts['t_a'] = FST.re("$^rewrite((tᎠ|taa?):Ꮣ, longest = True, leftmost = True)", fsts)
         fsts['t_e'] = FST.re("$^rewrite((tᎡ|tee?):Ꮥ, longest = True, leftmost = True)", fsts)
         fsts['t_i'] = FST.re("$^rewrite((tᎢ|tii?):Ꮧ, longest = True, leftmost = True)", fsts)
@@ -452,7 +452,7 @@ class chr_syllabary_fin():
         fsts['t_u'] = FST.re("$^rewrite((tᎤ|tuu?):Ꮪ, longest = True, leftmost = True)", fsts)
         fsts['t_v'] = FST.re("$^rewrite((tᎥ|tvv?):Ꮫ, longest = True, leftmost = True)", fsts)
 
-        #h -> vowel
+        # h -> vowel
         fsts['h_a'] = FST.re("$^rewrite((hᎠ|haa?):Ꭽ, longest = True, leftmost = True)", fsts)
         fsts['h_e'] = FST.re("$^rewrite((hᎡ|hee?):Ꭾ, longest = True, leftmost = True)", fsts)
         fsts['h_i'] = FST.re("$^rewrite((hᎢ|hii?):Ꭿ, longest = True, leftmost = True)", fsts)
@@ -460,16 +460,16 @@ class chr_syllabary_fin():
         fsts['h_u'] = FST.re("$^rewrite((hᎤ|huu?):Ꮁ, longest = True, leftmost = True)", fsts)
         fsts['h_v'] = FST.re("$^rewrite((hᎥ|hvv?):Ꮂ, longest = True, leftmost = True)", fsts)
 
-        #Ꮝ -> vowel
+        # Ꮝ -> vowel
         fsts['Ꮝ_e'] = FST.re("$^rewrite((ᏍᎡ|Ꮝee?):Ꮞ, longest = True, leftmost = True)", fsts)
         fsts['Ꮝ_o'] = FST.re("$^rewrite((ᏍᎣ|Ꮝoo?):Ꮠ, longest = True, leftmost = True)", fsts)
         fsts['Ꮝ_v'] = FST.re("$^rewrite((ᏍᎥ|Ꮝvv?):Ꮢ, longest = True, leftmost = True)", fsts)
 
-        #l -> vowel
+        # l -> vowel
         fsts['l_e'] = FST.re("$^rewrite((lᎡ|lee?):Ꮄ, longest = True, leftmost = True)", fsts)
         fsts['l_v'] = FST.re("$^rewrite((lᎥ|lvv?):Ꮈ, longest = True, leftmost = True)", fsts)
 
-        #Drop any stray i and ʔ
+        # Drop any stray i and ʔ
         fsts['drops'] = FST.re("$^rewrite((i|ʔ):'')", fsts)
 
 
@@ -518,8 +518,8 @@ class chr_syllabary_fin():
         return self.final.analyze(input)
     
 
- def main(argv):
-     morpher = chr_syllabary_fin()
+def main(argv):
+    morpher = chr_syllabary_fin()
     function = sys.argv[1]
     cherokee = sys.argv[2]
     if function == 'generate':
@@ -533,4 +533,4 @@ class chr_syllabary_fin():
 
 if __name__ == "main":
     result = main(sys.argv)
-    print(resu
+    print(result)

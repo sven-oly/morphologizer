@@ -8,6 +8,9 @@ from flask import Flask, render_template, stream_with_context, request, Response
 
 # The rules for particular morphologizers
 from cherokee_morphy import cherokee_morphy
+from cherokee_syllabary_fin_module import chr_syllabary_fin
+from cherokee_transcription_fin_module import chr_transcript_fin
+from cherokee_morphy import cherokee_morphy
 
 import cher_morph_defs
 

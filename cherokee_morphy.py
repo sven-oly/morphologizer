@@ -364,6 +364,15 @@ class morph_defs_latin():
 class gloss():
     def __init__(self):
 
+        self.prefix = [
+            'IRR',
+            'NGI',
+            'NGT',
+            'PRT',
+            'REL',
+            'TRN',
+        ]
+
         self.part1 = [
             '1D-Sub',
             '1D-ex-Obj',
@@ -439,6 +448,20 @@ class gloss():
             'after verb2': self.after_verb,
             'stem and final': self.stem2_and_4final,
         }
+        self.gloss_ui_type = {
+            'prefix': 'checkbox',
+            'verb1': 'radio',
+            'verb2': 'radio',
+            'after verb2': 'radio',
+            'stem and final': 'radio',
+        }
+        self.gloss_include_none = {
+            'prefix': True,
+            'verb1': False,
+            'verb2': False,
+            'after verb2': True,
+            'stem and final': True,
+            }
         
 
 class cherokee_morphy(morphy_base):

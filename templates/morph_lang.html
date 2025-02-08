@@ -2,6 +2,8 @@
 <html>
   <head>
 
+    <script src="/static/js/chrGloss.js"></script>
+
     <style>
       p.radio, div.radio {
           text-indent: -15px;
@@ -150,16 +152,35 @@
           out_area.value = out_area.innerHTML = selector.value;
       }
 
-      function change_generate_option(selection) {
+      function change_generate_option(selection, gloss_part) {
+          // Get the value
+          get_generate_parameters();
           
       }
 
-      // Gets all the paramters, eliminating the "None" values, and combining
+      // Gets all the parameters, eliminating the "None" values, and combining
       function get_generate_parameters() {
+          const output_element = document.getElementById('gen_text');
+          output_element.innerHTML = 'working';
+          let output_items = [];
+          let output_text = '';
           // Surround each with [] and combine with '+'
-          // {% for part in gloss_parts.keys() %}
-          // something
-          // {% endfor %}
+          let selectors;
+          {% for part in gloss_parts.keys() %}
+          selectors = document.querySelectorAll('input[name="{{part}}"]');
+          for (const selector of selectors) {
+              // Get the element
+              if (selector.checked) {
+                  // get its value(s)
+                  let selected_value = selector.value;
+                  // if not empty or None, add to the output_element text
+                  output_items.push('{{part}}', selected_value);
+              }
+          }
+          {% endfor %}
+          // Create text from selected_value
+          output_element.innerHTML = output_items;  // TODO: Fix this!
+
       }
 
     </script>
@@ -229,13 +250,16 @@
      <h3>Select parts (not yet implemented)</h3>
      {% for part in gloss_parts.keys() %}
      {% set part_index = loop.index %}
-     <p class='radio'>
+     <p class='gloss_ui'>
        <div class="radio">
          <b>{{part}}:</b>
-         <input type="radio" id="{{part}}_{{val}}" name="{{part}}" value=None}>
-         <label for="{{part}}_{{val}}">None</label>
+         {% if gloss_info.gloss_include_none.get(part) %}
+           <input type="{{gloss_info.gloss_ui_type.get(part)}}" id="{{part}}_{{val}}" name="{{part}}" value='None'>
+           <label for="{{part}}_{{val}}">None</label>
+         {% endif %}
          {% for val in gloss_parts.get(part) %} {{value}}
-         <input type="radio" id="{{part}}_{{val}}" name="{{part}}" value={{val}} onclick="change_generate_option(this)">
+           <input type="{{gloss_info.gloss_ui_type.get(part)}}" id="{{part}}_{{val}}" name="{{part}}" value={{val}}
+                  onclick="change_generate_option(this, '{{part}}');">
          <label for="{{part}}_{{val}}">{{val}}</label>
          {% endfor %}
        </div>

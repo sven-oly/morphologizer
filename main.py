@@ -69,6 +69,7 @@ def morphy_cherokee():
 
     chr_samples = samples.samples['chr']
 
+    print('STEMS = %s' % morpher.stems);
     return render_template(
         'morph_lang.html',
         gloss_info=base_morpher.gloss,

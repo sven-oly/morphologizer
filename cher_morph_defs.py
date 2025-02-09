@@ -457,6 +457,21 @@ class morph_chr_latin(morph_chr_base):
         self.Grammar = {}
 
         self.stems = {
+            'PresCont': [
+                'ᏍᏕᎵᎭ',
+                'ᎤᎢᎶᎠ',
+                'ᎣᎩᏍᎦ',
+                'ᎥᏃᏌᏍᎦ',
+                'ᎥᏂᎭ',
+                'ᏬᏂᎭ',
+                'ᎠᎢ',
+                'ᏅᏥᏙᎭ',
+                'ᎡᏡᎦ',
+                'ᎠᏚᎵᎭ',
+                'ᎣᎩᏍᎦ',
+            ]
+        }
+        self.notstems = {
             'setA': [
                 "ji^",
                 "iinii^",

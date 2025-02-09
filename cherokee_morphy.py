@@ -26,43 +26,56 @@ class morph_defs_latin():
     def __init__(self):
     
         self.stems = {
-            'setA': [
-                "ji^",
-                "iinii^",
-                "iitii^",
-                "oostii^",
-                "oojii^",
-                "hi^",
-                "stii^",
-                "iijii^",
-                "a^",
-                "ka^",
-                "anii^"
+            'PresCont': [
+                'ᏍᏕᎵᎭ',
+                'ᎤᎢᎶᎠ',
+                'ᎣᎩᏍᎦ',
+                'ᎥᏃᏌᏍᎦ',
+                'ᎥᏂᎭ',
+                'ᏬᏂᎭ',
+                'ᎠᎢ',
+                'ᏅᏥᏙᎭ',
+                'ᎡᏡᎦ',
+                'ᎠᏚᎵᎭ',
+                'ᎣᎩᏍᎦ',
             ],
-            'setB': [
-                "aki^",
-                "kinii^",
-                "iikii^",
-                "ookinii^",
-                "ookii^",
-                "ja^",
-                "stii^",
-                "iijii^",
-                "uu^",
-                "uunii^",
-            ],
-            'animate_3SO': [
-                "jii^",
-                "eenii^",
-                "eetii^",
-                "oostii^",
-                "oojii^",
-                "hii^",
-                "eestii^",
-                "eejii^",
-                "a^",
-                "ka^",
-                "anii^"]
+            
+            #'setA': [ "ji^",
+            #     "iinii^",
+            #     "iitii^",
+            #     "oostii^",
+            #     "oojii^",
+            #     "hi^",
+            #     "stii^",
+            #     "iijii^",
+            #     "a^",
+            #     "ka^",
+            #     "anii^"
+            # ],
+            # 'setB': [
+            #     "aki^",
+            #     "kinii^",
+            #     "iikii^",
+            #     "ookinii^",
+            #     "ookii^",
+            #     "ja^",
+            #     "stii^",
+            #     "iijii^",
+            #     "uu^",
+            #     "uunii^",
+            # ],
+            # 'animate_3SO': [
+            #     "jii^",
+            #     "eenii^",
+            #     "eetii^",
+            #     "oostii^",
+            #     "oojii^",
+            #     "hii^",
+            #     "eestii^",
+            #     "eejii^",
+            #     "a^",
+            #     "ka^",
+            #     "anii^"]
         }
 
         #Set A and B (Intransitive Verbs or Transitive Verbs with a 3S Inanimate Object)
@@ -445,6 +458,8 @@ class gloss():
             'prefix': self.prefix,
             'verb1': self.part1,
             'verb2': self.part2,  # '/' before, and insert after verb1
+            'stem': ['stem'],
+            'V': 'V',
             'after verb2': self.after_verb,
             'stem and final': self.stem2_and_4final,
         }
@@ -452,16 +467,29 @@ class gloss():
             'prefix': 'checkbox',
             'verb1': 'radio',
             'verb2': 'radio',
+            'stem': 'checkbox',
+            'V': 'checkbox',
             'after verb2': 'radio',
             'stem and final': 'radio',
         }
         self.gloss_include_none = {
-            'prefix': True,
+            'prefix': False,
             'verb1': False,
             'verb2': False,
+            'stem': False,
+            'V': False,
             'after verb2': True,
             'stem and final': True,
-            }
+        }
+        self.gloss_visible = {
+            'prefix': True,
+            'verb1': True,
+            'verb2': True,
+            'stem': False,
+            'V': False,
+            'after verb2': True,
+            'stem and final': True,
+        }
         
 
 class cherokee_morphy(morphy_base):

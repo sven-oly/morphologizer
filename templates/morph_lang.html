@@ -154,14 +154,57 @@
 
       function change_generate_option(selection, gloss_part) {
           // Get the value
-          get_generate_parameters();
+          let params = get_generate_parameters();
+
+
+          // Combine parameters and make into a string
+          let prefix = '';
+          let verb_part = '';
+          let after_verb;
+          let stem_element = document.getElementById('stems');
+          let word_type = '[V]';
+          let stem = stem_element.value;
+          let stem_final;
+          // Special cases
+          for (const param of params) {
+              const gloss_type = param[0];
+              if (gloss_type == 'prefix') {
+                  // Handle multiple values - how??
+                  prefix += param[1];
+              } else if (gloss_type == 'verb1') {
+                  verb_part = param[1];
+              } else if (gloss_type == 'verb2') {
+                  verb_part += '/' + param[1];
+              } else if (gloss_type == 'after verb2') {
+                  after_verb = param[1];
+              } else if (gloss_type == 'stem and final') {
+                  stem_final = param[1];
+              }
+          }
+          let output_items = [];
+          if (prefix) {
+              output_items.push('[' + prefix + ']');
+          }
+          output_items.push('[' + verb_part + ']');
+          output_items.push(stem);
+          output_items.push(word_type);
+          if (after_verb) {
+              output_items.push('[' + after_verb + ']');
+          }
+          if (stem_final) {
+              output_items.push('[' + stem_final + ']');
+          }
+          
+          // Ready to push it out.
+          const output_element = document.getElementById('gen_text');
+          const output_string = output_items.join('+');  // TODO: Fix this!
+          output_element.value = output_string;
           
       }
 
+
       // Gets all the parameters, eliminating the "None" values, and combining
       function get_generate_parameters() {
-          const output_element = document.getElementById('gen_text');
-          output_element.innerHTML = 'working';
           let output_items = [];
           let output_text = '';
           // Surround each with [] and combine with '+'
@@ -174,13 +217,18 @@
                   // get its value(s)
                   let selected_value = selector.value;
                   // if not empty or None, add to the output_element text
-                  output_items.push('{{part}}', selected_value);
+                  output_items.push(['{{part}}', selected_value]);
               }
           }
           {% endfor %}
           // Create text from selected_value
-          output_element.innerHTML = output_items;  // TODO: Fix this!
 
+          return output_items;
+
+      }
+
+      function clear_gloss() {
+         // TODO: reset the option on each item.
       }
 
     </script>
@@ -247,25 +295,6 @@
    </select>
 
    <div id='gloss' padding-left=3>
-     <h3>Select parts (not yet implemented)</h3>
-     {% for part in gloss_parts.keys() %}
-     {% set part_index = loop.index %}
-     <p class='gloss_ui'>
-       <div class="radio">
-         <b>{{part}}:</b>
-         {% if gloss_info.gloss_include_none.get(part) %}
-           <input type="{{gloss_info.gloss_ui_type.get(part)}}" id="{{part}}_{{val}}" name="{{part}}" value='None'>
-           <label for="{{part}}_{{val}}">None</label>
-         {% endif %}
-         {% for val in gloss_parts.get(part) %} {{value}}
-           <input type="{{gloss_info.gloss_ui_type.get(part)}}" id="{{part}}_{{val}}" name="{{part}}" value={{val}}
-                  onclick="change_generate_option(this, '{{part}}');">
-         <label for="{{part}}_{{val}}">{{val}}</label>
-         {% endfor %}
-       </div>
-     </p>
-     {% endfor %}
-
      <p>
        <label for="stems">Choose a stem:</label>
        <select id='stems' name='stems' onchange="populate_stem(this)">
@@ -276,6 +305,33 @@
 
          {% endfor %}
        </select>
+
+     <h3>Select gloss options</h3>
+     <p>
+       <input type="button" id='clear_gloss' onclick="clear_gloss();">Clear gloss</button>
+     </p>
+
+     {% for part in gloss_parts.keys() %}
+     {% set part_index = loop.index %}
+     <p class='gloss_ui'>
+       <div class="radio">
+         {% if gloss_info.gloss_visible.get(part) %}
+         <b>{{part}}:</b>
+         {% if gloss_info.gloss_include_none.get(part) %}
+           <input type="{{gloss_info.gloss_ui_type.get(part)}}" id="{{part}}_{{val}}" name="{{part}}" value='None'>
+           <label for="{{part}}_{{val}}">None</label>
+         {% endif %}
+         {% for val in gloss_parts.get(part) %} {{value}}
+           <input type="{{gloss_info.gloss_ui_type.get(part)}}" id="{{part}}_{{val}}" name="{{part}}" value={{val}}
+                  onclick="change_generate_option(this, '{{part}}');">
+         <label for="{{part}}_{{val}}">{{val}}</label>
+         {% endfor %}
+         {% endif %}
+         
+       </div>
+     </p>
+     {% endfor %}
+
      <p>
        <label for="gen_params">Generate parameters:</label>
        <textarea id='gen_params'></textarea>

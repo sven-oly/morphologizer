@@ -509,13 +509,17 @@ class chr_syllabary_fin():
 
         self. final = FST.re("$Lexicon @ $rule1 @ $rule2 @ $rule2_1 @ $rule3 @ $metathesis1 @ $metathesis2 @ $aspiration1 @ $aspiration2 @ $trn @ $ngt1 @ $ngt2 @ $ngt3 @ $ngt4 @ $ngt5 @ $rule4 @ $rule5 @ $rule6 @ $cleanup1 @ $rule8 @ $rule9 @ $cleanup2 @ $kw @ $k @ $y @ $j @ $w @ $n @ $t @ $h @ $Ꮝ @ $l @ $drops", fsts)
 
+    def generate(self, text):
+        result = list(self.final.generate(text))
+        if not result:
+            result = "-- undefined --"
+        return result
 
-
-    def generate(imput):
-        return self.final.generate(input)
-
-    def generate(imput):
-        return self.final.analyze(input)
+    def parse(self, text):
+        result = list(self.final.analyze(text))
+        if not result:
+            result = "-- undefined --"
+        return result
     
 
 def main(argv):

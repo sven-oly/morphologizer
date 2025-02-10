@@ -11,6 +11,37 @@
       }
     </style>
 
+  <style>
+   
+    @font-face{
+      font-family:"NotoSansCherokeeRegular";
+      src:url('/static/fonts/Cherokee/NotoSansCherokee-Regular.ttf')format('truetype');
+      font-weight:normal;
+      font-style:normal;
+    }
+
+    .NotoSansCherokee {
+        font-family: "NotoSansCherokeeRegular";
+        font-size:18px;
+    }
+
+    @font-face{
+        font-family:"Digohweli_1_7";
+        src:url('/static/fonts/Cherokee/Digohweli_1_7.ttf')format('truetype');
+        font-weight:normal;
+        font-style:normal;
+    }
+
+    .Digohweli {
+        font-family: "Digohweli";
+        font-size:18px;
+    }
+    textarea {  
+        font-family: Digohweli, NotoSansCherokee, Times, serif;  
+        font-size: 16px;   
+    }
+    </style>
+
     <script type="text/javascript">
 
       // Global language code
@@ -42,10 +73,6 @@
           target_list.push('input_text=' + input_text.trim());
           const target = target_list.join('&');
           
-/*          req.open('POST', target);
-          req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-          req.send(");
-*/
           req.open('POST', '/get_morph_results/', true);
           req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
           req.send(target);
@@ -147,9 +174,9 @@
       }
 
       function populate_stem(selector) {
-          // TODO: Fill in the stem field from the selected item
-          const out_area = document.getElementById('gen_params');
+          const out_area = document.getElementById('stem_text_area');
           out_area.value = out_area.innerHTML = selector.value;
+          change_generate_option('stem', 'stem');
       }
 
       function change_generate_option(selection, gloss_part) {
@@ -159,37 +186,43 @@
 
           // Combine parameters and make into a string
           let prefix = '';
+          let prefixes = [];
           let verb_part = '';
-          let after_verb;
-          let stem_element = document.getElementById('stems');
-          let word_type = '[V]';
+          let stem_form;
+          let stem_element = document.getElementById('stem_text_area');
           let stem = stem_element.value;
+          let word_type = '[V]';
           let stem_final;
           // Special cases
           for (const param of params) {
               const gloss_type = param[0];
+              const val = param[1];
               if (gloss_type == 'prefix') {
                   // Handle multiple values - how??
-                  prefix += param[1];
-              } else if (gloss_type == 'verb1') {
-                  verb_part = param[1];
-              } else if (gloss_type == 'verb2') {
-                  verb_part += '/' + param[1];
-              } else if (gloss_type == 'after verb2') {
-                  after_verb = param[1];
-              } else if (gloss_type == 'stem and final') {
-                  stem_final = param[1];
+                  prefix += val;
+                  prefixes.push('[' + val + ']');
+              } else if (gloss_type == 'subject') {
+                  verb_part = val;
+              } else if (gloss_type == 'object' && val != "None") {
+                  verb_part += '/' + val;
+              } else if (gloss_type == 'stem form' && val != "None" ) {
+                 stem_form = val ;
+              } else if (gloss_type == 'stem and final' && val != "None") {
+                  stem_final = val;
               }
           }
           let output_items = [];
           if (prefix) {
-              output_items.push('[' + prefix + ']');
+              for (p of prefixes) {
+                  output_items.push(p);
+              }
+              // output_items.push('[' + prefix + ']');
           }
           output_items.push('[' + verb_part + ']');
           output_items.push(stem);
           output_items.push(word_type);
-          if (after_verb) {
-              output_items.push('[' + after_verb + ']');
+          if (stem_form) {
+              output_items.push('[' + stem_form + ']');
           }
           if (stem_final) {
               output_items.push('[' + stem_final + ']');
@@ -239,63 +272,9 @@
     <p>A morphological generator and parser for {{lang_name}} ({{lang_code}}).
     <!-- Input box -->
       <h2>Generator</h2>
-
-<br />
-
-    <form action="/get_morph_results" method="post">
-    <label for="gen_text">Generate:</label>
-    <input type="text" id="gen_text" name="gen_text" size="80">
-
-    <input type="button" id='btb-generated' onclick="get_generate_data();">Get generate</button>
-    </form>
-    {% if use_textarea %} 
-    <label for="generate_response">Generate response</label>
-    <br />
-    <textarea id="generate_response" cols="0"/>
-    </textarea>
-    {% endif %}
-
-    <h2>Parser</h2>
-    <form action="/get_morph_results" method="
-    <label for="parse_text">Parse:</label>
-    <input type="text" id="parse_text" name="parse_text" size="80">
-    <input type="button" id='btb-parse' onclick="get_parse_data();">Get parse</button>
-    </form>
-    {% if use_textarea %}
-    <label for="parse_response">Parse response</label>
-    <br />
-    <textarea id="parse_response" cols="80"/>
-    </textarea>
-    {% endif %}
-
-    <h2>Paradigm</h2>
-    <form action="/get_morph_results" method="
-    <label for="parse_text">Paradign:</label>
-    <input type="text" id="paradigm_text" name="paradigm_text" size="80">
-    <input type="button" id='btb-paradigm' onclick="get_paradigm_data();">Get paradigm</button>
-    </form>
-
-    {% if use_textarea %}
-    <label for="paradigm_response">Paradigm response</label>
-    <br />
-    <textarea id="paradigm_response" cols="80"/>
-    </textarea>
-    {% endif %}
-
-    <h2>Info</h2>
-    <p>Grammar rules: {{rules}}
-      
-    <h2>Samples for testing</h2>
-
-   <!-- samples to populate quickly for testing -->
-   <select id='samples' name='samples' onchange="populate_from_sample(this)">
-   {% for sample in samples %}
-     <option value="{{sample}}">#{{loop.index}}: {{sample}}</option>
-   {% endfor %}
-   </select>
-
-   <div id='gloss' padding-left=3>
+      <h3>Select gloss options</h3>
      <p>
+       <div id='stem_setting'>
        <label for="stems">Choose a stem:</label>
        <select id='stems' name='stems' onchange="populate_stem(this)">
          {% for stem_set in stems %}
@@ -305,12 +284,16 @@
 
          {% endfor %}
        </select>
+           <label for="stem_text_area">Or type a stem:</label>
+           <textarea id='stem_text_area' onchange="change_generate_option('stem_text_area', 'stem');" rows='1'></textarea>
+           <br />
+           </div>
+           
+     <!-- <p> -->
+     <!--   <input type="button" id='clear_gloss' onclick="clear_gloss();">Clear gloss</button> -->
+     <!-- </p> -->
 
-     <h3>Select gloss options</h3>
-     <p>
-       <input type="button" id='clear_gloss' onclick="clear_gloss();">Clear gloss</button>
-     </p>
-
+       <div id='gloss' padding-left=3>
      {% for part in gloss_parts.keys() %}
      {% set part_index = loop.index %}
      <p class='gloss_ui'>
@@ -318,7 +301,8 @@
          {% if gloss_info.gloss_visible.get(part) %}
          <b>{{part}}:</b>
          {% if gloss_info.gloss_include_none.get(part) %}
-           <input type="{{gloss_info.gloss_ui_type.get(part)}}" id="{{part}}_{{val}}" name="{{part}}" value='None'>
+           <input type="{{gloss_info.gloss_ui_type.get(part)}}" id="{{part}}_{{val}}" name="{{part}}" value='None'
+                  onclick="change_generate_option(this, '{{part}}');">
            <label for="{{part}}_{{val}}">None</label>
          {% endif %}
          {% for val in gloss_parts.get(part) %} {{value}}
@@ -332,11 +316,66 @@
      </p>
      {% endfor %}
 
-     <p>
-       <label for="gen_params">Generate parameters:</label>
-       <textarea id='gen_params'></textarea>
-       <br />
+
+    <form action="/get_morph_results" method="post">
+    <label for="gen_text">Rule for generating:</label>
+    <input type="text" id="gen_text" name="gen_text" size="80">
+    <br />
+
+    <input type="button" id='btb-generated' onclick="get_generate_data();"> Generate from gloss</button>
+    </form>
+    {% if use_textarea %} 
+    <label for="generate_response">Generate result</label>
+    <br />
+    <textarea id="generate_response" cols="0"/>
+    </textarea>
+    {% endif %}
+
+    <h2>Parser</h2>
+    <form action="/get_morph_results" method="
+    <label for="parse_text">Text to parse:</label>
+    <input type="text" id="parse_text" name="parse_text" size="80">
+    <input type="button" id='btb-parse' onclick="get_parse_data();"> Parse text to  gloss</button>
+    </form>
+    {% if use_textarea %}
+    <label for="parse_response">Parse result</label>
+    <br />
+    <textarea id="parse_response" cols="80"/>
+    </textarea>
+    {% endif %}
+
+    <!-- <h2>Paradigm</h2> -->
+    <!-- <form action="/get_morph_results" method=" -->
+    <!-- <label for="parse_text">Paradign:</label> -->
+    <!-- <input type="text" id="paradigm_text" name="paradigm_text" size="80"> -->
+    <!-- <input type="button" id='btb-paradigm' onclick="get_paradigm_data();">Get paradigm</button> -->
+    <!-- </form> -->
+
+    <!-- {% if use_textarea %} -->
+    <!-- <label for="paradigm_response">Paradigm response</label> -->
+    <!-- <br /> -->
+    <!-- <textarea id="paradigm_response" cols="80"/> -->
+    <!-- </textarea> -->
+    <!-- {% endif %} -->
+
+    <h2>Samples for testing</h2>
+
+   <!-- samples to populate quickly for testing -->
+   <select id='samples' name='samples' onchange="populate_from_sample(this)">
+   {% for sample in samples %}
+     <option value="{{sample}}">#{{loop.index}}: {{sample}}</option>
+   {% endfor %}
+   </select>
+
+
+    <h2>Info</h2>
+    <p>Grammar rules: {{rules}}
+      
    </div>
+<div id='references'>
+  <h3>References</h3>
+
+  </div>
 
   </body>
   </html>

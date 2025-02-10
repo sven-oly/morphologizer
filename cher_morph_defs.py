@@ -468,7 +468,40 @@ class morph_chr_latin(morph_chr_base):
                 'ᏅᏥᏙᎭ',
                 'ᎡᏡᎦ',
                 'ᎠᏚᎵᎭ',
-                'ᎣᎩᏍᎦ',
+                'ᎠᏕᎦ',
+                'ᎨᏳᎭ',
+                'ᎪᏂᏲᎦ',
+                'ᎠᏂᎭ',
+                'ᏲᎷᎭ',
+                'ᎵᏓᏍᏗᎭ',
+                'ᏁᎫᏣ',
+                'ᎠᏛᏓᏍᏗ',
+                'ᏅᏆᎶᎠ',
+                'ᏪᏟᎭ',
+            ]
+        }
+        self.stems_translated = {
+            'PresCont': [
+                {'ᏍᏕᎵᎭ': 'to help'},
+                {'ᎤᎢᎶᎠ': 'to wash'},
+                {'ᎣᎩᏍᎦ': 'to smoke'},
+                {'ᎥᏃᏌᏍᎦ': 'to sweep'},
+                {'ᎥᏂᎭ': 'to hit'},
+                {'ᏬᏂᎭ': 'to speak'},
+                {'ᎠᎢ': 'to walk'},
+                {'ᏅᏥᏙᎭ': 'to toss about'},
+                {'ᎡᏡᎦ': 'to yell, howl, meow'},
+                {'ᎠᏚᎵᎭ': 'to want'},
+                {'ᎠᏕᎦ': 'to pitch/throw (a ball'},
+                {'ᎨᏳᎭ': 'to be possessive of something'},
+                {'ᎪᏂᏲᎦ': 'to be late'},
+                {'ᎠᏂᎭ': 'to be in bed'},
+                {'ᏲᎷᎭ': 'to float'},
+                {'ᎵᏓᏍᏗᎭ': 'to make a mistake'},
+                {'ᏁᎫᏣ': 'to be mean'},
+                {'ᎠᏛᏓᏍᏗ': 'to listen'},
+                {'ᏅᏆᎶᎠ': 'to hammer something'},
+                {'ᏪᏟᎭ': 'to joke/tease'},
             ]
         }
         self.notstems = {

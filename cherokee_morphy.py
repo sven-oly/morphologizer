@@ -376,14 +376,14 @@ class morph_defs_latin():
 
 class gloss():
     def __init__(self):
-
+        # The order of the prefixes is important
         self.prefix = [
             'IRR',
-            'NGI',
-            'NGT',
-            'PRT',
             'REL',
+            'NGI',
             'TRN',
+            'PRT',
+            'NGT',
         ]
 
         self.part1 = [
@@ -428,7 +428,7 @@ class gloss():
             '3S-inanimate-Obj'
         ]
         
-        self.after_verb = [
+        self.stem_form = [
             'Completive',
             'DeVerbalNoun',
             'Immediate',
@@ -444,50 +444,41 @@ class gloss():
             'NonExpPast',
         ]
 
-        self.prefix = [
-            'IRR',
-            'NGI',
-            'NGT',
-            'PRT',
-            'REL',
-            'TRN',
-        ]
-
         # TODO: add the punctuation needed around each item, e.g., [ and ]
         self.gloss_parts = {
             'prefix': self.prefix,
-            'verb1': self.part1,
-            'verb2': self.part2,  # '/' before, and insert after verb1
+            'subject': self.part1,
+            'object': self.part2,  # '/' before, and insert stem form
             'stem': ['stem'],
             'V': 'V',
-            'after verb2': self.after_verb,
+            'stem form': self.stem_form,
             'stem and final': self.stem2_and_4final,
         }
         self.gloss_ui_type = {
             'prefix': 'checkbox',
-            'verb1': 'radio',
-            'verb2': 'radio',
+            'subject': 'radio',
+            'object': 'radio',
             'stem': 'checkbox',
             'V': 'checkbox',
-            'after verb2': 'radio',
+            'stem form': 'radio',
             'stem and final': 'radio',
         }
         self.gloss_include_none = {
             'prefix': False,
-            'verb1': False,
-            'verb2': False,
+            'subject': False,
+            'object': True,
             'stem': False,
             'V': False,
-            'after verb2': True,
+            'stem form': False,
             'stem and final': True,
         }
         self.gloss_visible = {
             'prefix': True,
-            'verb1': True,
-            'verb2': True,
+            'subject': True,
+            'object': True,
             'stem': False,
             'V': False,
-            'after verb2': True,
+            'stem form': True,
             'stem and final': True,
         }
         
@@ -509,17 +500,34 @@ class cherokee_morphy(morphy_base):
         # The gloss symbols for this morphologizer
         self.gloss = gloss()
 
+        self.links = [
+            {
+                'brief': 'Reference Grammar',
+                'text':
+                'A REFERENCE GRAMMAR OF OKLAHOMA CHEROKEE, Brad Montgomery-Anderson, B.A., University of Colorado, 1993 M.A., University of Illinois at Chicago, 1996',
+                'link': 'https://www.cherokeepins.org/cherokee-reference-grammar'},
+            {
+                'brief': 'Some CHR tools',
+                'text': 'For typing, converting, and displaying Cherokee tet',
+                'link': 'https://languagetools-153419.appspot.com/chr/'
+            },
+            {
+                'brief': 'TranslationCommons.org',
+                'text': 'This work is done with volunteers from TranslationCommons.org',
+                'link': 'https://translationcommons.org/'
+                },
+        ]
+
     def generate(self, text):
         result = list(self.final.generate(text))
         if not result:
-            result = "empty"
+            result = "-- undefined --"
         return result
 
     def parse(self, text):
         result = list(self.final.analyze(text))
         if not result:
-            result = "empty"
-
+            result = "-- undefined --"
         return result
 
     def paradigm(self, text):

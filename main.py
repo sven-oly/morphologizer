@@ -37,7 +37,7 @@ debug = False
 
 morphers = {
     'chr': cherokee_morphy(),
-    'chr_cher': cher_morph_defs.morph_chr_syllabary(),
+    'chr_cher': chr_syllabary_fin(),
     'chr_latn': cher_morph_defs.morph_chr_latin(),
 }
 
@@ -69,7 +69,6 @@ def morphy_cherokee():
 
     chr_samples = samples.samples['chr']
 
-    print('STEMS = %s' % morpher.stems);
     return render_template(
         'morph_lang.html',
         gloss_info=base_morpher.gloss,
@@ -96,6 +95,9 @@ def morphy_results():
 
     # Generalize based on language code
     morpher = morphers[lang_code]
+    chr_morpher = morphers['chr_cher']  # Using the syllabary
+
+    # morpher = morphers['chr_cher']  # Using the syllabary
     if debug:
         print('input_text = %s' % input_text)
         print('lang_code = %s' % lang_code)
@@ -103,9 +105,9 @@ def morphy_results():
 
     result = '<No result>'
     if requested_function == 'generate':
-        result = morpher.generate(input_text)
+        result = chr_morpher.generate(input_text)
     elif requested_function == 'parse':
-        result = morpher.parse(input_text)
+        result = chr_morpher.parse(input_text)
     elif requested_function == 'paradigm':
         result = morpher.paradigm(input_text)
     else:

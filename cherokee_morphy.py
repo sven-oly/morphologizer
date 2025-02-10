@@ -507,6 +507,11 @@ class cherokee_morphy(morphy_base):
                 'A REFERENCE GRAMMAR OF OKLAHOMA CHEROKEE, Brad Montgomery-Anderson, B.A., University of Colorado, 1993 M.A., University of Illinois at Chicago, 1996',
                 'link': 'https://www.cherokeepins.org/cherokee-reference-grammar'},
             {
+                'brief': 'Github source',
+                'text': 'Read more about the description and code for this open source project.',
+                'link': 'https://github.com/sven-oly/morphologizer'
+                },
+            {
                 'brief': 'Some CHR tools',
                 'text': 'For typing, converting, and displaying Cherokee tet',
                 'link': 'https://languagetools-153419.appspot.com/chr/'

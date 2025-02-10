@@ -75,6 +75,7 @@ def morphy_cherokee():
         gloss_parts=base_morpher.gloss.gloss_parts,
         lang_name='ᏣᎳᎩ',
         lang_code=lang_code,
+        links=base_morpher.links,
         rules=len(morpher.rules),
         samples=chr_samples,
         stems=morpher.stems,

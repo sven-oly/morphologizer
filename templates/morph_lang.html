@@ -374,6 +374,14 @@
    </div>
 <div id='references'>
   <h3>References</h3>
+  <ul>
+  {% for item in links %}
+  <li>
+  <a href="{{item.link}}" target="_blank">{{item.brief}}</a>: {{item.text}}
+  </li>
+  {% endfor %}
+  </ul>
+  
 
   </div>
 

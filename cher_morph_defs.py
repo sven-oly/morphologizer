@@ -482,6 +482,7 @@ class morph_chr_latin(morph_chr_base):
         }
         self.stems_translated = {
             'PresCont': [
+                ['None', 'None'],
                 ['ᏍᏕᎵᎭ', 'to help'],
                 ['ᎤᎢᎶᎠ', 'to wash'],
                 ['ᎣᎩᏍᎦ', 'to smoke'],

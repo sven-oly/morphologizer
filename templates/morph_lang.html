@@ -122,7 +122,10 @@
               if (this.readyState == 4 && this.status == 200) {
                   const raw_data = this.responseText;
                   const result_data = JSON.parse(raw_data);
-                  let first = result_data['result_text'].join('\n');
+                  let first = result_data['result_text'];
+                  if (Array.isArray(first)) {
+                      first = first.join('\n');
+                  }
                   let second = result_data['latn_result'];
                   output_element.value = first + second;
               }

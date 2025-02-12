@@ -392,6 +392,10 @@ class chr_syllabary_fin():
         rule8 = FST.re("$^rewrite((aa?|ii?):'' / _ \^ $V, longest = True, leftmost = True)", fsts)
         rule9 = FST.re("$^rewrite((vv?):'' / _ \^ $V, longest = True, leftmost = True)", fsts)
 
+        self.rules =[
+            rule1, rule2, rule2_1, rule3,
+            rule4, rule5, rule6, rule8, rule9
+        ]
         cleanup2 = FST.re("$^rewrite(\^:'')")
         
         # Rules to convert any remaining transcription into syllabary.
@@ -507,7 +511,7 @@ class chr_syllabary_fin():
         fsts['Ꮝ'] = FST.re("$Ꮝ_e @ $Ꮝ_o @ $Ꮝ_v", fsts)
         fsts['l'] = FST.re("$l_e @ $l_v", fsts)
 
-        self. final = FST.re("$Lexicon @ $rule1 @ $rule2 @ $rule2_1 @ $rule3 @ $metathesis1 @ $metathesis2 @ $aspiration1 @ $aspiration2 @ $trn @ $ngt1 @ $ngt2 @ $ngt3 @ $ngt4 @ $ngt5 @ $rule4 @ $rule5 @ $rule6 @ $cleanup1 @ $rule8 @ $rule9 @ $cleanup2 @ $kw @ $k @ $y @ $j @ $w @ $n @ $t @ $h @ $Ꮝ @ $l @ $drops", fsts)
+        self.final = FST.re("$Lexicon @ $rule1 @ $rule2 @ $rule2_1 @ $rule3 @ $metathesis1 @ $metathesis2 @ $aspiration1 @ $aspiration2 @ $trn @ $ngt1 @ $ngt2 @ $ngt3 @ $ngt4 @ $ngt5 @ $rule4 @ $rule5 @ $rule6 @ $cleanup1 @ $rule8 @ $rule9 @ $cleanup2 @ $kw @ $k @ $y @ $j @ $w @ $n @ $t @ $h @ $Ꮝ @ $l @ $drops", fsts)
 
     def generate(self, text):
         result = list(self.final.generate(text))

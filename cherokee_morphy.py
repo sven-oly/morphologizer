@@ -27,7 +27,7 @@ class morph_defs_latin():
     
         self.stems = {
             'PresCont': [
-                'ᏍᏕᎵᎭ',
+                'Ꮝꮥꮅꭽ',
                 'ᎤᎢᎶᎠ',
                 'ᎣᎩᏍᎦ',
                 'ᎥᏃᏌᏍᎦ',

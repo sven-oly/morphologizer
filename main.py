@@ -10,9 +10,8 @@ from flask import Flask, render_template, stream_with_context, request, Response
 from cherokee_morphy import cherokee_morphy
 from cherokee_syllabary_fin_module import chr_syllabary_fin
 from cherokee_transcription_fin_module import chr_transcript_fin
-from cherokee_morphy import cherokee_morphy
 
-import cher_morph_defs
+from cher_morph_defs import morph_chr_latin
 
 import samples
 
@@ -38,8 +37,12 @@ debug = False
 morphers = {
     'chr': cherokee_morphy(),
     'chr_cher': chr_syllabary_fin(),
-    'chr_latn': cher_morph_defs.morph_chr_latin(),
+    # 'chr_latn': cher_morph_defs.morph_chr_latin(),
+    'chr_latn': chr_transcript_fin(),
 }
+
+# Initialize basic things
+morph_defs = morph_chr_latin()
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
@@ -78,7 +81,7 @@ def morphy_cherokee():
         links=base_morpher.links,
         rules=len(morpher.rules),
         samples=chr_samples,
-        stems=morpher.stems,
+        stems=morph_defs.stems,
         use_textarea=1
     )
 
@@ -97,6 +100,7 @@ def morphy_results():
     # Generalize based on language code
     morpher = morphers[lang_code]
     chr_morpher = morphers['chr_cher']  # Using the syllabary
+    chr_morpher_latn = morphers['chr_latn']  # Using the syllabary
 
     # morpher = morphers['chr_cher']  # Using the syllabary
     if debug:
@@ -107,8 +111,11 @@ def morphy_results():
     result = '<No result>'
     if requested_function == 'generate':
         result = chr_morpher.generate(input_text)
+        result_latn = chr_morpher_latn.generate(input_text)
+        print('LATN result = %s' % result_latn)
     elif requested_function == 'parse':
         result = chr_morpher.parse(input_text)
+        result_latn = ''
     elif requested_function == 'paradigm':
         result = morpher.paradigm(input_text)
     else:
@@ -116,7 +123,8 @@ def morphy_results():
         print('unknown result = %s' % result)
 
     # Simply pass back results as JSON data
-    data = {'result_text': result}
+    data = {'result_text': result,
+            'latn_result': result_latn}
     jdata = json.dumps(data);
     return jdata
 

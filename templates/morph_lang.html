@@ -122,7 +122,9 @@
               if (this.readyState == 4 && this.status == 200) {
                   const raw_data = this.responseText;
                   const result_data = JSON.parse(raw_data);
-                  output_element.value = result_data['result_text'];
+                  let first = result_data['result_text'].join('\n');
+                  let second = result_data['latn_result'];
+                  output_element.value = first + second;
               }
           };
 
@@ -225,7 +227,7 @@
        <select id='stems' name='stems' onchange="populate_stem(this)">
          {% for stem_set in stems %}
          {% for stem in stems[stem_set] %}
-         <option value="{{stem}}">#{{loop.index}}: {{stem_set}}: {{stem}}</option>
+         <option value="{{stem[0]}}">#{{loop.index}}: {{stem[0]}}  ==  ({{stem[1]}})</option>
          {% endfor %}
 
          {% endfor %}
@@ -273,7 +275,7 @@
     {% if use_textarea %} 
     <label for="generate_response">Generate result</label>
     <br />
-    <textarea id="generate_response" cols="0"/>
+    <textarea id="generate_response" cols="80"/>
     </textarea>
     {% endif %}
 
@@ -286,7 +288,7 @@
     {% if use_textarea %}
     <label for="parse_response">Parse result</label>
     <br />
-    <textarea id="parse_response" cols="80"/>
+    <textarea id="parse_response" cols="80" rows="5"/>
     </textarea>
     {% endif %}
 

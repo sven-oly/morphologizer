@@ -81,7 +81,7 @@ def morphy_cherokee():
         links=base_morpher.links,
         rules=len(morpher.rules),
         samples=chr_samples,
-        stems=morph_defs.stems,
+        stems=morph_defs.stems_translated,
         use_textarea=1
     )
 

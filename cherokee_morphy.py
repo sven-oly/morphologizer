@@ -439,6 +439,7 @@ class gloss():
         self.stem2_and_4final = [
             'AbsFut',
             'ExpPast',
+            'Habitual',
             'NomAbilityOrObligation',
             'NomAbility',
             'NonExpPast',

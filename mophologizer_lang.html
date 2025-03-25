@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Morph lang</title>
+    <script>
+      function onPageLoad() {
+      }
+      function pickLangFunc(id) {
+          const selector = document.getElementById(id);
+          const value = selector.value;
+          // Now call the backend
+          open('/select/?hl=' + value, target="_blank");
+      }
+      </script>
+  </head>
+
+  <body onload="onPageLoad()">
+    <h1>Morphologizer for {{lang_name}}({{lang_code}})</h1>
+    {{verb_info}}
+    <p></p>
+  </body>
+</html>

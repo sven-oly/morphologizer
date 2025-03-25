@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      // Global to store the language info.
+      const global_lang_code = '{{lang_code}}';
+
+      function onPageLoad() {
+          
+      }
+
+      function chooseVerb(lang_code, input_id, outputarea) {
+          const text_input = document.getElementById(input_id);
+          const verb = text_input.value;
+          // Send to the server side to compute the verb structure.
+          // Then put the result in the UI.
+
+          // Prepare for the call to the backendvar xmlhttp;
+          let xmlhttp;
+          if (window.XMLHttpRequest) {
+              // code for IE7+, Firefox, Chrome, Opera, Safari
+              xmlhttp = new XMLHttpRequest();
+          } else {
+              // code for IE6, IE5
+              xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+          }
+
+          // Deal with the results
+          xmlhttp.onreadystatechange= function() {
+              if (xmlhttp.readyState==4) {
+
+                  const returned_text = xmlhttp.responseText;
+                  const json_obj = JSON.parse(returned_text);
+                  
+                  const outputObj = document.getElementById(outputarea);
+
+                   if (json_obj.error) {
+                       // Warn, and don't change values.
+                       alert(json_obj.error);
+                       return;
+                   }
+                   outputObj.value = outputObj.innerHTML = returned_text;
+               }
+          }
+
+          // Set up the call
+          var target = "/get_verb/?lang_code=" + lang_code + "&verb=" + verb;
+          //xmlhttp.open("POST", target, true);
+          xmlhttp.open("GET", target, true);
+          const size = target.length;
+          xmlhttp.send();
+      }
+
+      function testClick(a, b, c) {
+          alert(a);
+      }
+
+      function pickLangFunc(id) {
+          const selector = document.getElementById(id);
+          const value = selector.value;
+          // Now call the backend
+          open('/select/?hl=' + value, target="_blank");
+      }
+          
+      </script>
+  </head>
+
+  <body onload="onPageLoad()">
+    <h1>Morphologizer {{lang_code}}</h1>
+    <p>Structure</p>
+    <input type="text" id='new_verb' value='manger' />
+    <input type="button" onclick="chooseVerb('{{lang_code}}', 'new_verb', 'morph_out');" value="Choose verb">
+
+    <h3>Morph output</h3>
+    <textarea id='morph_out'>Empty to start</textarea>
+
+    <hr>
+    {{verb_info}}
+  </body>
+</html>

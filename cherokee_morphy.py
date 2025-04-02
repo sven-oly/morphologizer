@@ -487,16 +487,17 @@ class gloss():
 class cherokee_morphy(morphy_base):
     def __init__(self):
         # And create another one with syllabary
-        latin_defs = morph_defs_latin()
+        # Is this ever used?
+        # latin_defs = morph_defs_latin()
 
-        defs = latin_defs
-        self.lang_name = 'ᏣᎳᎩ'
-        self.lang_code = 'chr'
-        self.Grammar = defs.Grammar
-        self.fsts = defs.fsts
-        self.final = defs.final
-        self.rules = defs.rules
-        self.lexicon = defs.Lexicon
+        # defs = latin_defs
+        # self.lang_name = 'ᏣᎳᎩ'
+        # self.lang_code = 'chr'
+        # self.Grammar = defs.Grammar
+        # self.fsts = defs.fsts
+        # self.final = defs.final
+        # self.rules = defs.rules
+        # self.lexicon = defs.Lexicon
 
         # The gloss symbols for this morphologizer
         self.gloss = gloss()

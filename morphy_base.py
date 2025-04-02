@@ -12,3 +12,6 @@ class morphy_base():
 
     def parse(self):
         return None
+
+    def paradigm(self):
+        return None

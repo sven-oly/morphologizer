@@ -135,7 +135,7 @@ def generate():
     input_text = request.args.get('gen_text')
 
     # Generalize based on language code
-    morpher = cherokee_morphy()
+    morpher =  morphers['chr_cher']
 
     generated = morpher.generate(input_text)
 
@@ -154,7 +154,7 @@ def parse():
     input_text = request.args.get('parse_text')
 
     # Generalize based on language code
-    morpher = cherokee_morphy()
+    morpher = morphers['chr_cher']
 
     parsed = morpher.parse(input_text)
 
@@ -173,7 +173,7 @@ def test():
     input_text = request.args.get('text')
 
     # Generalize based on language code
-    morpher = cherokee_morphy()
+    morpher = morphers['chr_cher']
 
     result =  morpher.test(input_text)
 

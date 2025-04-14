@@ -17,6 +17,5 @@
     <h2>Info</h2>
     <p>Grammar rules:
 
-    <
   </body>
   </html>

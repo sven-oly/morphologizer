@@ -302,7 +302,7 @@ class morph_defs_latin():
 
         #Negative Time Prefix (kaa, [NGT]+) rules
 
-        #kaa + uu = kvv^wa 
+        #kaa + uu = kvv^wa
         self.ngt1 = FST.re("$^rewrite((kaa\^uu):(kvv\^wa))", self.fsts)
 
         #kvv^wa^ + v = kvv^wa^
@@ -487,17 +487,16 @@ class gloss():
 class cherokee_morphy(morphy_base):
     def __init__(self):
         # And create another one with syllabary
-        # Is this ever used?
-        # latin_defs = morph_defs_latin()
+        latin_defs = morph_defs_latin()
 
-        # defs = latin_defs
-        # self.lang_name = 'ᏣᎳᎩ'
-        # self.lang_code = 'chr'
-        # self.Grammar = defs.Grammar
-        # self.fsts = defs.fsts
-        # self.final = defs.final
-        # self.rules = defs.rules
-        # self.lexicon = defs.Lexicon
+        defs = latin_defs
+        self.lang_name = 'ᏣᎳᎩ'
+        self.lang_code = 'chr'
+        self.Grammar = defs.Grammar
+        self.fsts = defs.fsts
+        self.final = defs.final
+        self.rules = defs.rules
+        self.lexicon = defs.Lexicon
 
         # The gloss symbols for this morphologizer
         self.gloss = gloss()

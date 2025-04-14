@@ -1,0 +1,102 @@
+<!-- templates/cherokee_keyboard.html -->
+<div class="cherokee-keyboard">
+  <div class="keyboard-controls">
+    <button class="btn btn-sm btn-outline-secondary keyboard-clear">Clear</button>
+    <button class="btn btn-sm btn-outline-secondary keyboard-undo">Undo</button>
+    <select class="form-select form-select-sm keyboard-layout">
+      <option value="phonetic">Phonetic</option>
+      <option value="syllabary">Syllabary</option>
+    </select>
+  </div>
+
+  <div class="keyboard-rows mt-2">
+    <!-- First Row -->
+    <div class="keyboard-row">
+      <button data-phonetic="a" data-syllabary="Ꭰ">Ꭰ</button>
+      <button data-phonetic="s" data-syllabary="Ꮝ">Ꮝ</button>
+      <button data-phonetic="d" data-syllabary="Ꮣ">Ꮣ</button>
+      <!-- Add more buttons... -->
+    </div>
+    <!-- Add more rows as needed -->
+  </div>
+</div>
+
+<style>
+.cherokee-keyboard {
+  font-family: "Noto Sans Cherokee", sans-serif;
+  margin-top: 15px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 5px;
+}
+
+.keyboard-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.keyboard-row button {
+  font-size: 1.2em;
+  min-width: 2.5em;
+  height: 2.5em;
+  border: 1px solid #dee2e6;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.keyboard-controls {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Get the active textarea (assume only one is visible at a time)
+  function getActiveTextarea() {
+    return document.querySelector('textarea:focus') ||
+           document.querySelector('textarea[id$="-input"]');
+  }
+
+  // Handle keyboard button clicks
+  document.querySelectorAll('.keyboard-row button').forEach(button => {
+    button.addEventListener('click', function() {
+      const textarea = getActiveTextarea();
+      if (!textarea) return;
+
+      const layout = document.querySelector('.keyboard-layout').value;
+      const char = this.getAttribute(`data-${layout}`);
+
+      // Insert at cursor position
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      textarea.value = textarea.value.substring(0, start) +
+                       char +
+                       textarea.value.substring(end);
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + char.length;
+    });
+  });
+
+  // Clear button
+  document.querySelector('.keyboard-clear').addEventListener('click', function() {
+    const textarea = getActiveTextarea();
+    if (textarea) textarea.value = '';
+  });
+
+  // Undo button (simple implementation)
+  document.querySelector('.keyboard-undo').addEventListener('click', function() {
+    const textarea = getActiveTextarea();
+    if (textarea) document.execCommand('undo');
+  });
+});
+</script>

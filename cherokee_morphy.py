@@ -11,7 +11,7 @@ from pyfoma import Paradigm
 import json
 import logging
 import sys
-
+from typing import Dict, List, Tuple
 from morphy_base import morphy_base
 
 class morph_definitions():

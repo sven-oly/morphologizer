@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Cherokee&display=swap" rel="stylesheet">
     <style>
       p.radio, div.radio {
           text-indent: -15px;
@@ -11,10 +11,159 @@
       input.disabled {
           text-decoration: line-through;
       }
+
+      /* Keyboard Styles */
+      .keyboard-container {
+          margin: 20px 0;
+          padding: 15px;
+          background: #f5f5f5;
+          border-radius: 8px;
+          border: 1px solid #ddd;
+      }
+
+      .keyboard-toggle {
+          background: #4CAF50;
+          color: white;
+          border: none;
+          padding: 8px 15px;
+          border-radius: 4px;
+          cursor: pointer;
+          margin-right: 10px;
+      }
+
+      .keyboard-option {
+          margin-right: 15px;
+      }
+
+      #keyboard-display {
+          width: 100%;
+          height: 100px;
+          margin-bottom: 20px;
+          padding: 15px;
+          font-size: 18px;
+          border: 2px solid #333;
+          border-radius: 8px;
+          resize: none;
+      }
+
+      #movable-keyboard-container {
+          font-family: "Noto Sans Cherokee", sans-serif;
+          width: 100%;
+          background: #e0e0e0;
+          border-radius: 8px;
+          border: 2px solid #333;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+          position: relative;
+          user-select: none;
+          margin-bottom: 20px;
+          display: none;
+      }
+
+      .keyboard-header {
+          background-color: #333;
+          color: white;
+          padding: 10px 15px;
+          cursor: move;
+          border-top-left-radius: 6px;
+          border-top-right-radius: 6px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+
+      .keyboard-close-btn {
+          background: #ff6b6b;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          padding: 5px 10px;
+          cursor: pointer;
+      }
+
+      .cherokee-keyboard-inner {
+          padding: 15px;
+      }
+
+      .keyboard-rows {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+      }
+
+      .keyboard-row {
+          display: flex;
+          gap: 8px;
+          justify-content: center;
+      }
+
+      .keyboard-key {
+          font-family: "Noto Sans Cherokee", sans-serif;
+          font-size: 18px;
+          width: 50px;
+          height: 50px;
+          border: 1px solid #999;
+          background: white;
+          border-radius: 6px;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          transition: all 0.1s;
+          position: relative;
+      }
+
+      .keyboard-key:hover {
+          background: #ddd;
+      }
+
+      .keyboard-key:active {
+          background: #ccc;
+          transform: scale(0.95);
+      }
+
+      .keyboard-key .latin {
+          font-size: 10px;
+          color: #666;
+          position: absolute;
+          top: 2px;
+      }
+
+      .keyboard-key .cherokee {
+          font-size: 18px;
+      }
+
+      .keyboard-key.special-key {
+          font-size: 14px;
+          width: 80px;
+          background: #ccc;
+      }
+
+      .keyboard-key.space-key {
+          width: 300px;
+      }
+
+      .keyboard-key.enter-key {
+          width: 100px;
+          background: #8bc34a;
+          color: white;
+      }
+
+      .keyboard-key.backspace-key {
+          width: 100px;
+          background: #f44336;
+          color: white;
+      }
+
+      .keyboard-controls {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 15px;
+      }
     </style>
 
-  <style>
-   
+    <style>
+
     @font-face{
       font-family:"NotoSansCherokeeRegular";
       src:url('/static/fonts/Cherokee/NotoSansCherokee-Regular.ttf')format('truetype');
@@ -38,19 +187,18 @@
         font-family: "Digohweli";
         font-size:18px;
     }
-    textarea {  
-        font-family: Digohweli, NotoSansCherokee, Times, serif;  
-        font-size: 16px;   
+    textarea {
+        font-family: Digohweli, NotoSansCherokee, Times, serif;
+        font-size: 16px;
     }
     </style>
 
     <script src="/static/js/{{lang_code}}Gloss.js"></script>
 
     <script type="text/javascript">
-
       // Global language code
       const lang_code = '{{lang_code}}';
-      
+
       function get_morph_data(caller_function, text_source_id, output_id, lang_code) {
           // Gets informatino from the back end and puts results into the output area specified.
           //console.log("get_morph_data" + caller_function + ' ' + text_source + ' ' + output_id);
@@ -76,7 +224,7 @@
           target_list.push('lang_code=' + lang_code);
           target_list.push('input_text=' + input_text.trim());
           const target = target_list.join('&');
-          
+
           req.open('POST', '/get_morph_results/', true);
           req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
           req.send(target);
@@ -105,12 +253,12 @@
           const input_text_ready = encodeURIComponent(input_text.trim());
           target_list.push('input_text=' + input_text_ready);
           const target = target_list.join('&');
-          
+
           req.open('POST', '/get_morph_results/', true);
           req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
           req.send(target);
       }
-      
+
       function get_parse_data() {
           // Gets informatino from the back end and puts results into the output area specified.
           const input_source = document.getElementById('parse_text');
@@ -137,13 +285,12 @@
           const input_text_ready = encodeURIComponent(input_text.trim());
           target_list.push('input_text=' + input_text_ready);
           const target = target_list.join('&');
-          
+
           req.open('POST', '/get_morph_results/', true);
           req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
           req.send(target);
       }
 
-     
       function get_paradigm_data() {
           // Gets informatino from the back end and puts results into the output area specified.
           const input_source = document.getElementById('paradigm_text');
@@ -165,21 +312,20 @@
           const input_text_ready = encodeURIComponent(input_text.trim());
           target_list.push('input_text=' + input_text_ready);
           const target = target_list.join('&');
-          
+
           req.open('POST', '/get_morph_results/', true);
           req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
           req.send(target);
-      }      
+      }
 
       const sample_matcher = /\'([^\']*)\'/g;
       function populate_from_sample(selector) {
           const item_strings = [...selector.value.matchAll(sample_matcher)];
 
           // Put these values into the input areas.
-          // Put these values into the input areas.
           const parse_input = document.getElementById('parse_text');
           parse_input.value = item_strings[0][1];
-          
+
           const gen_input = document.getElementById('gen_text');
           gen_input.value = item_strings[1][1];
       }
@@ -190,41 +336,395 @@
           change_generate_option('stem', 'stem');
       }
 
-      // Gets all the parameters, eliminating the "None" values, and combining
       function get_generate_parameters() {
           let output_items = [];
           let output_text = '';
-          // Surround each with [] and combine with '+'
           let selectors;
           {% for part in gloss_parts.keys() %}
           selectors = document.querySelectorAll('input[name="{{part}}"]');
           for (const selector of selectors) {
-              // Get the element
               if (selector.checked) {
-                  // get its value(s)
                   let selected_value = selector.value;
-                  // if not empty or None, add to the output_element text
                   output_items.push(['{{part}}', selected_value]);
               }
           }
           {% endfor %}
-          // Create text from selected_value
           return output_items;
       }
 
       function clear_gloss() {
          // TODO: reset the option on each item.
       }
+
+      /* Keyboard Functions */
+      function toggleKeyboard() {
+          const keyboardContainer = document.getElementById('movable-keyboard-container');
+          const keyboardType = document.querySelector('input[name="keyboard-type"]:checked').value;
+
+          // Update keyboard layout based on selection
+          const gridKeyboard = document.getElementById('grid-keyboard');
+          const qwertyKeyboard = document.getElementById('qwerty-keyboard');
+
+          if (keyboardType === 'grid') {
+              gridKeyboard.style.display = 'block';
+              qwertyKeyboard.style.display = 'none';
+          } else {
+              gridKeyboard.style.display = 'none';
+              qwertyKeyboard.style.display = 'block';
+          }
+
+          // Toggle visibility
+          if (keyboardContainer.style.display === 'none' || keyboardContainer.style.display === '') {
+              keyboardContainer.style.display = 'block';
+          } else {
+              keyboardContainer.style.display = 'none';
+          }
+      }
+
+      function initKeyboard() {
+          const displayBox = document.getElementById('keyboard-display');
+          const keyboardContainer = document.getElementById('movable-keyboard-container');
+          const closeButton = keyboardContainer.querySelector('.keyboard-close-btn');
+
+          // Focus display box by default
+          displayBox.focus();
+
+          // Close keyboard button
+          closeButton.addEventListener('click', () => {
+              keyboardContainer.style.display = 'none';
+          });
+
+          // Handle all keyboard key presses
+          document.querySelectorAll('.keyboard-key').forEach(key => {
+              key.addEventListener('click', () => {
+                  const char = key.getAttribute('data-char');
+                  const action = key.getAttribute('data-action');
+
+                  // Determine which input field has focus
+                  let activeElement = document.activeElement;
+                  const inputFields = ['gen_text', 'parse_text', 'stem_text_area', 'keyboard-display'];
+
+                  if (!inputFields.includes(activeElement.id)) {
+                      activeElement = displayBox;
+                  }
+
+                  if (char) {
+                      // Insert character at cursor position
+                      const start = activeElement.selectionStart;
+                      const end = activeElement.selectionEnd;
+                      activeElement.value = activeElement.value.slice(0, start) + char + activeElement.value.slice(end);
+                      // Move cursor position
+                      activeElement.selectionStart = activeElement.selectionEnd = start + char.length;
+                  } else if (action) {
+                      switch(action) {
+                          case 'backspace':
+                              if (activeElement.selectionStart === activeElement.selectionEnd && activeElement.selectionStart > 0) {
+                                  // Delete one character before cursor
+                                  const pos = activeElement.selectionStart - 1;
+                                  activeElement.value = activeElement.value.slice(0, pos) + activeElement.value.slice(pos + 1);
+                                  activeElement.selectionStart = activeElement.selectionEnd = pos;
+                              } else if (activeElement.selectionStart !== activeElement.selectionEnd) {
+                                  // Delete selected text
+                                  const start = activeElement.selectionStart;
+                                  activeElement.value = activeElement.value.slice(0, start) + activeElement.value.slice(activeElement.selectionEnd);
+                                  activeElement.selectionStart = activeElement.selectionEnd = start;
+                              }
+                              break;
+                          case 'enter':
+                              // Insert newline
+                              const start = activeElement.selectionStart;
+                              const end = activeElement.selectionEnd;
+                              activeElement.value = activeElement.value.slice(0, start) + '\n' + activeElement.value.slice(end);
+                              activeElement.selectionStart = activeElement.selectionEnd = start + 1;
+                              break;
+                          case 'shift':
+                          case 'alt':
+                          case 'ctrl':
+                              // Modifier keys - could be implemented for keyboard shortcuts
+                              break;
+                      }
+                  }
+
+                  // Keep focus on active element
+                  activeElement.focus();
+              });
+          });
+
+          // Clear button
+          document.querySelector('.keyboard-clear').addEventListener('click', () => {
+              displayBox.value = '';
+              displayBox.focus();
+          });
+
+          // Undo button
+          document.querySelector('.keyboard-undo').addEventListener('click', () => {
+              document.execCommand('undo');
+              displayBox.focus();
+          });
+
+          // Make keyboard draggable
+          let isDragging = false;
+          let startX, startY, initialX, initialY;
+
+          keyboardContainer.querySelector('.keyboard-header').addEventListener('mousedown', (e) => {
+              isDragging = true;
+              startX = e.clientX;
+              startY = e.clientY;
+              initialX = keyboardContainer.offsetLeft;
+              initialY = keyboardContainer.offsetTop;
+              document.addEventListener('mousemove', drag);
+              document.addEventListener('mouseup', stopDrag);
+              e.preventDefault(); // Prevent text selection
+          });
+
+          function drag(e) {
+              if (isDragging) {
+                  const dx = e.clientX - startX;
+                  const dy = e.clientY - startY;
+                  keyboardContainer.style.left = `${initialX + dx}px`;
+                  keyboardContainer.style.top = `${initialY + dy}px`;
+              }
+          }
+
+          function stopDrag() {
+              isDragging = false;
+              document.removeEventListener('mousemove', drag);
+              document.removeEventListener('mouseup', stopDrag);
+          }
+
+          // Handle physical keyboard input
+          document.addEventListener('keydown', (e) => {
+              // Find the corresponding virtual key
+              const virtualKey = document.querySelector(`.keyboard-key[data-latin="${e.key.toLowerCase()}"]`);
+              if (virtualKey) {
+                  virtualKey.click();
+                  // Add visual feedback
+                  virtualKey.style.backgroundColor = '#aaa';
+                  setTimeout(() => {
+                      virtualKey.style.backgroundColor = '';
+                  }, 100);
+                  e.preventDefault();
+              }
+          });
+      }
+
+      // Initialize keyboard when page loads
+      window.onload = function() {
+          initKeyboard();
+      };
     </script>
-    
   </head>
   <body>
     <h1>Morphy</h1>
-    <p>A morphological generator and parser for {{lang_name}} ({{lang_code}}).
-    <!-- Input box -->
-      <h2>Generator</h2>
-      <h3>Select gloss options</h3>
-     <p>
+    <p>A morphological generator and parser for {{lang_name}} ({{lang_code}}).</p>
+
+    <!-- Keyboard Toggle and Options -->
+    <div class="keyboard-container">
+        <h2>Cherokee Keyboard</h2>
+        <div>
+            <button class="keyboard-toggle" onclick="toggleKeyboard()">Toggle Keyboard</button>
+            <span class="keyboard-option">
+                <input type="radio" id="grid-layout" name="keyboard-type" value="grid" checked>
+                <label for="grid-layout">Grid Layout</label>
+            </span>
+            <span class="keyboard-option">
+                <input type="radio" id="qwerty-layout" name="keyboard-type" value="qwerty">
+                <label for="qwerty-layout">QWERTY Layout</label>
+            </span>
+        </div>
+        <textarea id="keyboard-display" placeholder="Type here or use the virtual keyboard below..."></textarea>
+    </div>
+
+    <!-- Virtual Keyboard -->
+    <div id="movable-keyboard-container">
+        <div class="keyboard-header">
+            <span>Cherokee Keyboard</span>
+            <button class="keyboard-close-btn">Close</button>
+        </div>
+        <div class="cherokee-keyboard-inner">
+            <div class="keyboard-controls">
+                <button class="keyboard-clear">Clear</button>
+                <button class="keyboard-undo">Undo</button>
+            </div>
+
+            <!-- Grid Layout Keyboard -->
+            <div id="grid-keyboard" class="keyboard-rows">
+                <!-- Number Row -->
+                <div class="keyboard-row">
+                    <button class="keyboard-key" data-char="1">1</button>
+                    <button class="keyboard-key" data-char="2">2</button>
+                    <button class="keyboard-key" data-char="3">3</button>
+                    <button class="keyboard-key" data-char="4">4</button>
+                    <button class="keyboard-key" data-char="5">5</button>
+                    <button class="keyboard-key" data-char="6">6</button>
+                    <button class="keyboard-key" data-char="7">7</button>
+                    <button class="keyboard-key" data-char="8">8</button>
+                    <button class="keyboard-key" data-char="9">9</button>
+                    <button class="keyboard-key" data-char="0">0</button>
+                    <button class="keyboard-key backspace-key" data-action="backspace">⌫</button>
+                </div>
+
+                <!-- Cherokee Syllabary Rows -->
+                <div class="keyboard-row">
+                    <button class="keyboard-key" data-char="Ꭰ">Ꭰ</button>
+                    <button class="keyboard-key" data-char="Ꭱ">Ꭱ</button>
+                    <button class="keyboard-key" data-char="Ꭲ">Ꭲ</button>
+                    <button class="keyboard-key" data-char="Ꭳ">Ꭳ</button>
+                    <button class="keyboard-key" data-char="Ꭴ">Ꭴ</button>
+                    <button class="keyboard-key" data-char="Ꭵ">Ꭵ</button>
+                    <button class="keyboard-key" data-char="Ꭶ">Ꭶ</button>
+                    <button class="keyboard-key" data-char="Ꭷ">Ꭷ</button>
+                    <button class="keyboard-key" data-char="Ꭸ">Ꭸ</button>
+                    <button class="keyboard-key" data-char="Ꭹ">Ꭹ</button>
+                </div>
+
+                <div class="keyboard-row">
+                    <button class="keyboard-key" data-char="Ꭺ">Ꭺ</button>
+                    <button class="keyboard-key" data-char="Ꭻ">Ꭻ</button>
+                    <button class="keyboard-key" data-char="Ꭼ">Ꭼ</button>
+                    <button class="keyboard-key" data-char="Ꭽ">Ꭽ</button>
+                    <button class="keyboard-key" data-char="Ꭾ">Ꭾ</button>
+                    <button class="keyboard-key" data-char="Ꭿ">Ꭿ</button>
+                    <button class="keyboard-key" data-char="Ꮀ">Ꮀ</button>
+                    <button class="keyboard-key" data-char="Ꮁ">Ꮁ</button>
+                    <button class="keyboard-key" data-char="Ꮂ">Ꮂ</button>
+                    <button class="keyboard-key" data-char="Ꮃ">Ꮃ</button>
+                </div>
+
+                <div class="keyboard-row">
+                    <button class="keyboard-key" data-char="Ꮄ">Ꮄ</button>
+                    <button class="keyboard-key" data-char="Ꮅ">Ꮅ</button>
+                    <button class="keyboard-key" data-char="Ꮆ">Ꮆ</button>
+                    <button class="keyboard-key" data-char="Ꮇ">Ꮇ</button>
+                    <button class="keyboard-key" data-char="Ꮈ">Ꮈ</button>
+                    <button class="keyboard-key" data-char="Ꮉ">Ꮉ</button>
+                    <button class="keyboard-key" data-char="Ꮊ">Ꮊ</button>
+                    <button class="keyboard-key" data-char="Ꮋ">Ꮋ</button>
+                    <button class="keyboard-key" data-char="Ꮌ">Ꮌ</button>
+                    <button class="keyboard-key" data-char="Ꮍ">Ꮍ</button>
+                </div>
+
+                <div class="keyboard-row">
+                    <button class="keyboard-key" data-char="Ꮎ">Ꮎ</button>
+                    <button class="keyboard-key" data-char="Ꮏ">Ꮏ</button>
+                    <button class="keyboard-key" data-char="Ꮐ">Ꮐ</button>
+                    <button class="keyboard-key" data-char="Ꮑ">Ꮑ</button>
+                    <button class="keyboard-key" data-char="Ꮒ">Ꮒ</button>
+                    <button class="keyboard-key" data-char="Ꮓ">Ꮓ</button>
+                    <button class="keyboard-key" data-char="Ꮔ">Ꮔ</button>
+                    <button class="keyboard-key" data-char="Ꮕ">Ꮕ</button>
+                    <button class="keyboard-key" data-char="Ꮖ">Ꮖ</button>
+                    <button class="keyboard-key" data-char="Ꮗ">Ꮗ</button>
+                </div>
+
+                <div class="keyboard-row">
+                    <button class="keyboard-key" data-char="Ꮘ">Ꮘ</button>
+                    <button class="keyboard-key" data-char="Ꮙ">Ꮙ</button>
+                    <button class="keyboard-key" data-char="Ꮚ">Ꮚ</button>
+                    <button class="keyboard-key" data-char="Ꮛ">Ꮛ</button>
+                    <button class="keyboard-key" data-char="Ꮜ">Ꮜ</button>
+                    <button class="keyboard-key" data-char="Ꮝ">Ꮝ</button>
+                    <button class="keyboard-key" data-char="Ꮞ">Ꮞ</button>
+                    <button class="keyboard-key" data-char="Ꮟ">Ꮟ</button>
+                    <button class="keyboard-key" data-char="Ꮠ">Ꮠ</button>
+                    <button class="keyboard-key" data-char="Ꮡ">Ꮡ</button>
+                </div>
+
+                <!-- Special Keys Row -->
+                <div class="keyboard-row">
+                    <button class="keyboard-key special-key" data-action="shift">Shift</button>
+                    <button class="keyboard-key special-key" data-action="alt">Alt</button>
+                    <button class="keyboard-key space-key" data-char=" ">Space</button>
+                    <button class="keyboard-key enter-key" data-action="enter">Enter</button>
+                    <button class="keyboard-key special-key" data-action="ctrl">Ctrl</button>
+                </div>
+            </div>
+
+            <!-- QWERTY Layout Keyboard -->
+            <div id="qwerty-keyboard" class="keyboard-rows" style="display: none;">
+                <!-- Number Row -->
+                <div class="keyboard-row">
+                    <button class="keyboard-key" data-char="Ꮐ" data-latin="`"><span class="latin">`</span><span class="cherokee">Ꮐ</span></button>
+                    <button class="keyboard-key" data-char="1" data-latin="1"><span class="latin">1</span><span class="cherokee">1</span></button>
+                    <button class="keyboard-key" data-char="2" data-latin="2"><span class="latin">2</span><span class="cherokee">2</span></button>
+                    <button class="keyboard-key" data-char="3" data-latin="3"><span class="latin">3</span><span class="cherokee">3</span></button>
+                    <button class="keyboard-key" data-char="4" data-latin="4"><span class="latin">4</span><span class="cherokee">4</span></button>
+                    <button class="keyboard-key" data-char="5" data-latin="5"><span class="latin">5</span><span class="cherokee">5</span></button>
+                    <button class="keyboard-key" data-char="6" data-latin="6"><span class="latin">6</span><span class="cherokee">6</span></button>
+                    <button class="keyboard-key" data-char="7" data-latin="7"><span class="latin">7</span><span class="cherokee">7</span></button>
+                    <button class="keyboard-key" data-char="8" data-latin="8"><span class="latin">8</span><span class="cherokee">8</span></button>
+                    <button class="keyboard-key" data-char="9" data-latin="9"><span class="latin">9</span><span class="cherokee">9</span></button>
+                    <button class="keyboard-key" data-char="0" data-latin="0"><span class="latin">0</span><span class="cherokee">0</span></button>
+                    <button class="keyboard-key" data-char="Ꮗ" data-latin="-"><span class="latin">-</span><span class="cherokee">Ꮗ</span></button>
+                    <button class="keyboard-key" data-char="Ꮘ" data-latin="="><span class="latin">=</span><span class="cherokee">Ꮘ</span></button>
+                    <button class="keyboard-key backspace-key" data-action="backspace">⌫</button>
+                </div>
+
+                <!-- First Row -->
+                <div class="keyboard-row">
+                    <button class="keyboard-key" data-char="Ꮤ" data-latin="q"><span class="latin">q</span><span class="cherokee">Ꮤ</span></button>
+                    <button class="keyboard-key" data-char="Ꮣ" data-latin="w"><span class="latin">w</span><span class="cherokee">Ꮣ</span></button>
+                    <button class="keyboard-key" data-char="Ꭼ" data-latin="e"><span class="latin">e</span><span class="cherokee">Ꭼ</span></button>
+                    <button class="keyboard-key" data-char="Ꮢ" data-latin="r"><span class="latin">r</span><span class="cherokee">Ꮢ</span></button>
+                    <button class="keyboard-key" data-char="Ꮦ" data-latin="t"><span class="latin">t</span><span class="cherokee">Ꮦ</span></button>
+                    <button class="keyboard-key" data-char="Ꮿ" data-latin="y"><span class="latin">y</span><span class="cherokee">Ꮿ</span></button>
+                    <button class="keyboard-key" data-char="Ꭴ" data-latin="u"><span class="latin">u</span><span class="cherokee">Ꭴ</span></button>
+                    <button class="keyboard-key" data-char="Ꭲ" data-latin="i"><span class="latin">i</span><span class="cherokee">Ꭲ</span></button>
+                    <button class="keyboard-key" data-char="Ꭷ" data-latin="o"><span class="latin">o</span><span class="cherokee">Ꭷ</span></button>
+                    <button class="keyboard-key" data-char="Ꮙ" data-latin="p"><span class="latin">p</span><span class="cherokee">Ꮙ</span></button>
+                    <button class="keyboard-key" data-char="Ꭵ" data-latin="["><span class="latin">[</span><span class="cherokee">Ꭵ</span></button>
+                    <button class="keyboard-key" data-char="Ꮚ" data-latin="]"><span class="latin">]</span><span class="cherokee">Ꮚ</span></button>
+                    <button class="keyboard-key" data-char="Ꮛ" data-latin="\"><span class="latin">\</span><span class="cherokee">Ꮛ</span></button>
+                </div>
+
+                <!-- Second Row -->
+                <div class="keyboard-row">
+                    <button class="keyboard-key" data-char="Ꭰ" data-latin="a"><span class="latin">a</span><span class="cherokee">Ꭰ</span></button>
+                    <button class="keyboard-key" data-char="Ꮝ" data-latin="s"><span class="latin">s</span><span class="cherokee">Ꮝ</span></button>
+                    <button class="keyboard-key" data-char="Ꮥ" data-latin="d"><span class="latin">d</span><span class="cherokee">Ꮥ</span></button>
+                    <button class="keyboard-key" data-char="Ꮩ" data-latin="f"><span class="latin">f</span><span class="cherokee">Ꮩ</span></button>
+                    <button class="keyboard-key" data-char="Ꭶ" data-latin="g"><span class="latin">g</span><span class="cherokee">Ꭶ</span></button>
+                    <button class="keyboard-key" data-char="Ꭽ" data-latin="h"><span class="latin">h</span><span class="cherokee">Ꭽ</span></button>
+                    <button class="keyboard-key" data-char="Ꮳ" data-latin="j"><span class="latin">j</span><span class="cherokee">Ꮳ</span></button>
+                    <button class="keyboard-key" data-char="Ꮄ" data-latin="k"><span class="latin">k</span><span class="cherokee">Ꮄ</span></button>
+                    <button class="keyboard-key" data-char="Ꮮ" data-latin="l"><span class="latin">l</span><span class="cherokee">Ꮮ</span></button>
+                    <button class="keyboard-key" data-char="Ꮜ" data-latin=";"><span class="latin">;</span><span class="cherokee">Ꮜ</span></button>
+                    <button class="keyboard-key" data-char="Ꭱ" data-latin="'"><span class="latin">'</span><span class="cherokee">Ꭱ</span></button>
+                </div>
+
+                <!-- Third Row -->
+                <div class="keyboard-row">
+                    <button class="keyboard-key special-key" data-action="shift">Shift</button>
+                    <button class="keyboard-key" data-char="Ꮽ" data-latin="z"><span class="latin">z</span><span class="cherokee">Ꮽ</span></button>
+                    <button class="keyboard-key" data-char="Ꮞ" data-latin="x"><span class="latin">x</span><span class="cherokee">Ꮞ</span></button>
+                    <button class="keyboard-key" data-char="Ꮯ" data-latin="c"><span class="latin">c</span><span class="cherokee">Ꮯ</span></button>
+                    <button class="keyboard-key" data-char="Ꮪ" data-latin="v"><span class="latin">v</span><span class="cherokee">Ꮪ</span></button>
+                    <button class="keyboard-key" data-char="Ꮹ" data-latin="b"><span class="latin">b</span><span class="cherokee">Ꮹ</span></button>
+                    <button class="keyboard-key" data-char="Ꮉ" data-latin="n"><span class="latin">n</span><span class="cherokee">Ꮉ</span></button>
+                    <button class="keyboard-key" data-char="Ꮋ" data-latin="m"><span class="latin">m</span><span class="cherokee">Ꮋ</span></button>
+                    <button class="keyboard-key" data-char="Ᏸ" data-latin=","><span class="latin">,</span><span class="cherokee">Ᏸ</span></button>
+                    <button class="keyboard-key" data-char="Ᏹ" data-latin="."><span class="latin">.</span><span class="cherokee">Ᏹ</span></button>
+                    <button class="keyboard-key" data-char="Ᏺ" data-latin="/"><span class="latin">/</span><span class="cherokee">Ᏺ</span></button>
+                    <button class="keyboard-key special-key" data-action="shift">Shift</button>
+                </div>
+
+                <!-- Space Row -->
+                <div class="keyboard-row">
+                    <button class="keyboard-key special-key" data-action="ctrl">Ctrl</button>
+                    <button class="keyboard-key special-key" data-action="alt">Alt</button>
+                    <button class="keyboard-key space-key" data-char=" ">Space</button>
+                    <button class="keyboard-key enter-key" data-action="enter">Enter</button>
+                    <button class="keyboard-key special-key" data-action="alt">Alt</button>
+                    <button class="keyboard-key special-key" data-action="ctrl">Ctrl</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Original Morphological Analyzer Content -->
+    <h2>Generator</h2>
+    <h3>Select gloss options</h3>
+    <p>
        <div id='stem_setting'>
        <label for="stems">Choose a stem:</label>
        <select id='stems' name='stems' onchange="populate_stem(this)">
@@ -232,17 +732,12 @@
          {% for stem in stems[stem_set] %}
          <option value="{{stem[0]}}">#{{loop.index}}: {{stem[0]}}  ==  ({{stem[1]}})</option>
          {% endfor %}
-
          {% endfor %}
        </select>
            <label for="stem_text_area">Or type a stem:</label>
            <textarea id='stem_text_area' onchange="change_generate_option('stem_text_area', 'stem');" rows='1'></textarea>
            <br />
            </div>
-           
-     <!-- <p> -->
-     <!--   <input type="button" id='clear_gloss' onclick="clear_gloss();">Clear gloss</button> -->
-     <!-- </p> -->
 
        <div id='gloss' padding-left=3>
      {% for part in gloss_parts.keys() %}
@@ -262,20 +757,17 @@
          <label for="{{part}}_{{val}}">{{val}}</label>
          {% endfor %}
          {% endif %}
-         
        </div>
      </p>
      {% endfor %}
-
 
     <form action="/get_morph_results" method="post">
     <label for="gen_text">Rule for generating:</label>
     <input type="text" id="gen_text" name="gen_text" size="80">
     <br />
-
     <input type="button" id='btb-generated' onclick="get_generate_data();"> Generate from gloss</button>
     </form>
-    {% if use_textarea %} 
+    {% if use_textarea %}
     <label for="generate_response">Generate result</label>
     <br />
     <textarea id="generate_response" cols="80"/>
@@ -295,22 +787,7 @@
     </textarea>
     {% endif %}
 
-    <!-- <h2>Paradigm</h2> -->
-    <!-- <form action="/get_morph_results" method=" -->
-    <!-- <label for="parse_text">Paradign:</label> -->
-    <!-- <input type="text" id="paradigm_text" name="paradigm_text" size="80"> -->
-    <!-- <input type="button" id='btb-paradigm' onclick="get_paradigm_data();">Get paradigm</button> -->
-    <!-- </form> -->
-
-    <!-- {% if use_textarea %} -->
-    <!-- <label for="paradigm_response">Paradigm response</label> -->
-    <!-- <br /> -->
-    <!-- <textarea id="paradigm_response" cols="80"/> -->
-    <!-- </textarea> -->
-    <!-- {% endif %} -->
-
     <h2>Samples for testing</h2>
-
    <!-- samples to populate quickly for testing -->
    <select id='samples' name='samples' onchange="populate_from_sample(this)">
    {% for sample in samples %}
@@ -318,10 +795,8 @@
    {% endfor %}
    </select>
 
-
     <h2>Additional Information:</h2>
-    <!-- <p>Grammar rules: {{rules}} -->
-      
+
    </div>
 <div id='references'>
   <h3>References</h3>
@@ -332,9 +807,6 @@
   </li>
   {% endfor %}
   </ul>
-  
-
   </div>
-
   </body>
 </html>

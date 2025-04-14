@@ -10,7 +10,7 @@ from flask import Flask, render_template, stream_with_context, request, Response
 from cherokee_morphy import cherokee_morphy
 from cherokee_syllabary_fin_module import chr_syllabary_fin
 from cherokee_transcription_fin_module import chr_transcript_fin
-
+from flask import Flask
 from cher_morph_defs import morph_chr_latin
 
 import samples
@@ -54,12 +54,24 @@ _, PROJECT_ID = google.auth.default()
 QUEUE_NAME = 'font-convert-queue'
 REGION_ID = LOCATION_ID = 'us-central1'
 QUEUE_PATH = ts_client.queue_path(PROJECT_ID, REGION_ID, QUEUE_NAME)
+app = Flask(__name__)
 
 @app.route('/')
 def hello():
     """Top of the conversion application."""
     who = request.url
     return render_template('main.html', base=who)
+
+
+
+    
+    
+
+
+
+
+
+
 
 
 @app.route('/cherokee/')
@@ -135,7 +147,7 @@ def generate():
     input_text = request.args.get('gen_text')
 
     # Generalize based on language code
-    morpher =  morphers['chr_cher']
+    morpher = cherokee_morphy()
 
     generated = morpher.generate(input_text)
 
@@ -154,7 +166,7 @@ def parse():
     input_text = request.args.get('parse_text')
 
     # Generalize based on language code
-    morpher = morphers['chr_cher']
+    morpher = cherokee_morphy()
 
     parsed = morpher.parse(input_text)
 
@@ -173,7 +185,7 @@ def test():
     input_text = request.args.get('text')
 
     # Generalize based on language code
-    morpher = morphers['chr_cher']
+    morpher = cherokee_morphy()
 
     result =  morpher.test(input_text)
 

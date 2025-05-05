@@ -40,42 +40,9 @@ class morph_defs_latin():
                 'ᎣᎩᏍᎦ',
             ],
             
-            #'setA': [ "ji^",
-            #     "iinii^",
-            #     "iitii^",
-            #     "oostii^",
-            #     "oojii^",
-            #     "hi^",
-            #     "stii^",
-            #     "iijii^",
-            #     "a^",
-            #     "ka^",
-            #     "anii^"
-            # ],
-            # 'setB': [
-            #     "aki^",
-            #     "kinii^",
-            #     "iikii^",
-            #     "ookinii^",
-            #     "ookii^",
-            #     "ja^",
-            #     "stii^",
-            #     "iijii^",
-            #     "uu^",
-            #     "uunii^",
-            # ],
-            # 'animate_3SO': [
-            #     "jii^",
-            #     "eenii^",
-            #     "eetii^",
-            #     "oostii^",
-            #     "oojii^",
-            #     "hii^",
-            #     "eestii^",
-            #     "eejii^",
-            #     "a^",
-            #     "ka^",
-            #     "anii^"]
+    
+         
+         
         }
 
         #Set A and B (Intransitive Verbs or Transitive Verbs with a 3S Inanimate Object)
@@ -302,7 +269,7 @@ class morph_defs_latin():
 
         #Negative Time Prefix (kaa, [NGT]+) rules
 
-        #kaa + uu = kvv^wa
+        
         self.ngt1 = FST.re("$^rewrite((kaa\^uu):(kvv\^wa))", self.fsts)
 
         #kvv^wa^ + v = kvv^wa^
@@ -487,16 +454,10 @@ class gloss():
 class cherokee_morphy(morphy_base):
     def __init__(self):
         # And create another one with syllabary
-        latin_defs = morph_defs_latin()
+        
 
-        defs = latin_defs
-        self.lang_name = 'ᏣᎳᎩ'
-        self.lang_code = 'chr'
-        self.Grammar = defs.Grammar
-        self.fsts = defs.fsts
-        self.final = defs.final
-        self.rules = defs.rules
-        self.lexicon = defs.Lexicon
+        
+        
 
         # The gloss symbols for this morphologizer
         self.gloss = gloss()

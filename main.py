@@ -80,7 +80,7 @@ def morphy_cherokee():
     lang_code = 'chr'
     base_morpher = morphers['chr']
     morpher = morphers['chr_latn']
-    # morpher = morphers['chr_cher']  # Using the syllabary
+   
 
     chr_samples = samples.samples['chr']
 
@@ -114,7 +114,7 @@ def morphy_results():
     chr_morpher = morphers['chr_cher']  # Using the syllabary
     chr_morpher_latn = morphers['chr_latn']  # Using the syllabary
 
-    # morpher = morphers['chr_cher']  # Using the syllabary
+   
     if debug:
         print('input_text = %s' % input_text)
         print('lang_code = %s' % lang_code)
@@ -203,4 +203,4 @@ if __name__ == '__main__':
     # Engine, a webserver process such as Gunicorn will serve the app. This
     # can be configured by adding an `entrypoint` to app.yaml.
     app.run(host='127.0.0.1', port=8080, debug=True, threaded=True)
-# [END gae_python37_app]
+

@@ -1,9 +1,6 @@
 runtime: python39
 
-instance_class: F2
-
-inbound_services:
-- warmup
+entrypoint: gunicorn -b :$PORT main:app
 
 handlers:
 - url: /static
@@ -11,3 +8,9 @@ handlers:
 
 - url: /.*
   script: auto
+# instance_class: F2  # Use F2, F4 for better performance
+
+manual_scaling:
+  instances: 1
+inbound_services:
+  - warmup

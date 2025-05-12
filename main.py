@@ -41,6 +41,20 @@ morphers = {
     'chr_latn': chr_transcript_fin(),
 }
 
+# Temporary: keyboard setup for Cherokee
+chr_kb_list = [
+    {'shortName':  'chr_phone',
+     'fontFamily': 'NotoSansCherokeePlus',
+     'longName': 'Cherokee Phonetic',
+     'instructions':
+     'New: How to type PUA numerals: 0-9, ]0-]9 /0-/9 p0-p6'
+    },
+    {'shortName':  'chr',
+     'longName': 'Cherokee',
+     'fontFamily': 'NotoSansCherokeePlus',
+    },
+]
+
 # Initialize basic things
 morph_defs = morph_chr_latin()
 
@@ -88,6 +102,7 @@ def morphy_cherokee():
         'morph_lang.html',
         gloss_info=base_morpher.gloss,
         gloss_parts=base_morpher.gloss.gloss_parts,
+        kb_list=chr_kb_list,
         lang_name='ᏣᎳᎩ',
         lang_code=lang_code,
         links=base_morpher.links,
